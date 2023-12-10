@@ -44,7 +44,7 @@ interface MembersInfoType {
             Tools & Techniques For Data Sciences
           </p>
           <p class="tui-text_h6 px-1" style="color: var(--tui-text-03)">
-            Instructor 1 & Instructor 2
+          Dr. Syed Hasan Adil & Engr. Muhammad Anas
           </p>
         </div>
         <div class="col-4 d-flex align-items-center">
@@ -104,15 +104,15 @@ export class MainComponent {
   MemberList: MembersInfoType[] = [
     {
       name: 'Zeeshan Ali',
-      rollNo: 'MS.DS-23-009',
+      rollNo: 'MSDS-23101132',
     },
     {
-      name: 'Zeeshan Ali',
-      rollNo: 'MS.DS-23-009',
+      name: 'Ume Farwa Ali Pirzada',
+      rollNo: 'MSDS-23101130',
     },
     {
-      name: 'Zeeshan Ali',
-      rollNo: 'MS.DS-23-009',
+      name: 'Mariha Noor Larik',
+      rollNo: 'MSDS-23101136',
     },
   ];
 }
