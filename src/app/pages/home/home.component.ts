@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { HttpClientModule, HttpClient } from '@angular/common/http';
 import {
   collapseAnimation,
   collapseOnLeaveAnimation,
@@ -20,6 +21,7 @@ import { TuiSvgModule, TuiButtonModule } from '@taiga-ui/core';
 import { Observable, of, Subject, timer } from 'rxjs';
 import { finalize, map, switchMap } from 'rxjs/operators';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { ImportDataService } from '@service/ImportData.service';
 
 @Component({
   selector: 'app-home',
@@ -28,6 +30,7 @@ import { FormControl, ReactiveFormsModule } from '@angular/forms';
     CommonModule,
     RouterModule,
     ReactiveFormsModule,
+    HttpClientModule,
     TuiSvgModule,
     TuiButtonModule,
     TuiCarouselModule,
@@ -36,6 +39,7 @@ import { FormControl, ReactiveFormsModule } from '@angular/forms';
     TuiPaginationModule,
     TuiInputFilesModule,
   ],
+  providers: [ImportDataService],
   template: `
     <div class="home">
       <div class="container">
@@ -87,6 +91,7 @@ import { FormControl, ReactiveFormsModule } from '@angular/forms';
               <form class="mt-3">
                 <tui-input-files
                   *ngIf="!control.value"
+                  accept="text/csv"
                   [formControl]="control"
                   (reject)="onReject($event)"
                 ></tui-input-files>
@@ -195,6 +200,10 @@ export class HomeComponent {
   readyFile = false;
   uploadLoading = false;
 
+  file_name = '';
+
+  constructor(private readonly importDataService: ImportDataService) {}
+
   readonly control = new FormControl();
 
   readonly rejectedFiles$ = new Subject<TuiFileLike | null>();
@@ -222,6 +231,7 @@ export class HomeComponent {
     return timer(1000).pipe(
       map(() => {
         this.readyFile = true;
+        this.file_name = file.name;
         return file;
       }),
       finalize(() => this.loadingFiles$.next(null))
@@ -230,9 +240,6 @@ export class HomeComponent {
 
   onSubmit() {
     this.uploadLoading = true;
-
-    setTimeout(() => {
-      this.uploadLoading = false;
-    }, 3000);
+    this.importDataService.import(this.file_name).subscribe();
   }
 }
