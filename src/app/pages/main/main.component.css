@@ -4,6 +4,10 @@
   background-color: var(--tui-base-02);
 }
 
+img {
+  height: 100px;
+}
+
 .wrapper{
   display: flex;
   flex-direction: row;

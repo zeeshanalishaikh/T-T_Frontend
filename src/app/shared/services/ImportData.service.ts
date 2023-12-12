@@ -11,6 +11,11 @@ export class ImportDataService {
 
   constructor(private http: HttpClient) {}
 
+  public getAll(): Observable<any> {
+    const URL = `${this.endpoint}/resultdetail`;
+    return this.http.get<any>(URL);
+  }
+
   public import(fileName: string): Observable<any> {
     const URL = `${this.endpoint}/import`;
 

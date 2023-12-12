@@ -1,13 +1,19 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  OnInit,
+  signal,
+} from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
-import {
-  collapseAnimation,
-  collapseOnLeaveAnimation,
-  expandOnEnterAnimation,
-} from 'angular-animations';
 
+import {
+  TuiSvgModule,
+  TuiButtonModule,
+  TuiDropdownModule,
+} from '@taiga-ui/core';
 import {
   TuiCarouselModule,
   TuiIslandModule,
@@ -16,7 +22,10 @@ import {
   TuiPaginationModule,
   TuiFileLike,
 } from '@taiga-ui/kit';
-import { TuiSvgModule, TuiButtonModule } from '@taiga-ui/core';
+import {
+  TuiTableModule,
+  TuiTablePaginationModule,
+} from '@taiga-ui/addon-table';
 
 import { Observable, of, Subject, timer } from 'rxjs';
 import { finalize, map, switchMap } from 'rxjs/operators';
@@ -33,6 +42,9 @@ import { ImportDataService } from '@service/ImportData.service';
     HttpClientModule,
     TuiSvgModule,
     TuiButtonModule,
+    TuiDropdownModule,
+    TuiTableModule,
+    TuiTablePaginationModule,
     TuiCarouselModule,
     TuiIslandModule,
     TuiActionModule,
@@ -43,167 +55,207 @@ import { ImportDataService } from '@service/ImportData.service';
   template: `
     <div class="home">
       <div class="container">
-        <div class="row pb-5">
-          <div class="col">
-            <img src="assets/img/logo.png" width="180" alt="Logo" />
-            <h1 class="tui-text_h1 mb-3 mt-2">Welcome,</h1>
-            <p class="tui-text_h6 px-1" style="color: var(--tui-text-03)">
-              What would you like to perform
-            </p>
-          </div>
-        </div>
         <div
-          class="p-5 mb-5"
+          class="py-3 px-4 my-3"
           style="background-color: #fff; border-radius: 20px;"
         >
-          <div class="row pb-2">
-            <span class="tui-text_h6" style="color: var(--tui-success-fill)">
-              Actions
-            </span>
-            <span
-              class="tui-text_body-s pb-4"
-              style="color: var(--tui-text-03);"
-            >
-              Browse and view..
-            </span>
+          <div class="row pb-2 justify-content-between">
+            <div class="col-2">
+              <h1 class="tui-text_h4 mb-3 mt-2">Dashboard</h1>
+              <span
+                class="tui-text_body-xl"
+                style="color: var(--tui-success-fill); font-weight: 600;"
+              >
+                Actions
+              </span>
+              <br />
+              <span
+                class="tui-text_body-s pb-4"
+                style="color: var(--tui-text-03);"
+              >
+                Browse and view..
+              </span>
+            </div>
+            <div class="col-2 d-flex justify-content-end">
+              <img src="assets/img/logo.png" style="height: 100px;" />
+            </div>
           </div>
-          <div class="row ">
+          <div class="row my-3 justify-content-between">
             <div class="col">
-              @if (!showFileUpload) {
-              <tui-island [@collapseOnLeave] [@expandOnEnter]>
-                <h3 class="tui-island__title">Training</h3>
-                <p class="tui-island__paragraph">
-                  Import Dataset regarding Chronic Kidney Disease to train
-                  algorithm.
-                </p>
-                <button
-                  tuiButton
-                  type="button"
-                  appearance="flat"
-                  size="m"
-                  class="tui-island__footer-button"
-                  (click)="showFileUpload = !showFileUpload"
-                >
-                  Select
-                </button>
-              </tui-island>
-              } @else {
-              <form class="mt-3">
-                <tui-input-files
-                  *ngIf="!control.value"
-                  accept="text/csv"
-                  [formControl]="control"
-                  (reject)="onReject($event)"
-                ></tui-input-files>
-
-                <tui-files class="tui-space_top-1">
-                  <tui-file
-                    *ngIf="loadedFiles$ | async as file"
-                    [file]="file"
-                    [showDelete]="control.enabled"
-                    (removed)="removeFile()"
-                  ></tui-file>
-
-                  <tui-file
-                    *ngIf="rejectedFiles$ | async as file"
-                    state="error"
-                    [file]="file"
-                    [showDelete]="control.enabled"
-                    (removed)="clearRejected()"
-                  ></tui-file>
-
-                  <tui-file
-                    *ngIf="loadingFiles$ | async as file"
-                    state="loading"
-                    [file]="file"
-                    [showDelete]="control.enabled"
-                  ></tui-file>
-                </tui-files>
-                <button
-                  appearance="accent"
-                  tuiButton
-                  type="button"
-                  size="m"
-                  [disabled]="!readyFile"
-                  [showLoader]="uploadLoading"
-                  (click)="onSubmit()"
-                  class="tui-space_right-3 tui-space_bottom-3 mt-3"
-                >
-                  Upload
-                </button>
-                <button
-                  appearance="secondary-destructive"
-                  tuiButton
-                  type="button"
-                  size="m"
-                  class="tui-space_right-3 tui-space_bottom-3 mt-3"
-                  (click)="showFileUpload = !showFileUpload"
-                >
-                  back
-                </button>
-              </form>
-              }
+              <button tuiButton appearance="primary" size="s" class="m-1">
+                Perform E.D.A
+              </button>
+              <button tuiButton appearance="primary" size="s" class="m-1">
+                Check Accuracy
+              </button>
             </div>
-            <div class="col offset-1">
-              <tui-island>
-                <h3 class="tui-island__title">EDA</h3>
-                <p class="tui-island__paragraph">
-                  Perform exploratory data analysis from the Dataset selected.
-                </p>
-                <button
-                  tuiButton
-                  type="button"
-                  appearance="flat"
-                  size="m"
-                  [disabled]="!EnableAction"
-                  class="tui-island__footer-button"
-                >
-                  Check
-                </button>
-              </tui-island>
+            <div class="col-2 d-flex justify-content-end">
+              <button
+                tuiButton
+                appearance="secondary-destructive"
+                [icon]="open() ? 'tuiIconClose' : 'tuiIconFilePlus'"
+                size="s"
+                class="m-1"
+                [tuiDropdown]="content"
+                [tuiDropdownManual]="open()"
+                (click)="onDropdown()"
+              >
+                {{ open() ? 'Cancel' : 'Add new' }}
+                <ng-template #content>
+                  <form class="m-3">
+                    <span class="tui-text_body-s">
+                      Please select Dataset File.
+                    </span>
+                    <tui-input-files
+                      *ngIf="!control.value"
+                      accept="text/csv"
+                      [formControl]="control"
+                      size="m"
+                      (reject)="onReject($event)"
+                      class="mt-3"
+                    ></tui-input-files>
+
+                    <tui-files class="tui-space_top-1">
+                      <tui-file
+                        *ngIf="loadedFiles$ | async as file"
+                        [file]="file"
+                        [showDelete]="control.enabled"
+                        (removed)="removeFile()"
+                      ></tui-file>
+
+                      <tui-file
+                        *ngIf="rejectedFiles$ | async as file"
+                        state="error"
+                        [file]="file"
+                        [showDelete]="control.enabled"
+                        (removed)="clearRejected()"
+                      ></tui-file>
+
+                      <tui-file
+                        *ngIf="loadingFiles$ | async as file"
+                        state="loading"
+                        [file]="file"
+                        [showDelete]="control.enabled"
+                      ></tui-file>
+                    </tui-files>
+                    <button
+                      appearance="accent"
+                      tuiButton
+                      type="button"
+                      size="s"
+                      [disabled]="!readyFile()"
+                      [showLoader]="uploadLoading()"
+                      (click)="onSubmit()"
+                      class="tui-space_right-3 tui-space_bottom-3 mt-2"
+                    >
+                      Upload
+                    </button>
+                  </form>
+                </ng-template>
+              </button>
             </div>
+          </div>
+          <div class="row mt-2">
             <div class="col">
-              <tui-island>
-                <h3 class="tui-island__title">Check Accuracy</h3>
-                <p class="tui-island__paragraph">
-                  Check different algorithm's accuracy for performing
-                  predictions.
-                </p>
-                <button
-                  tuiButton
-                  type="button"
-                  appearance="flat"
-                  size="m"
-                  [disabled]="!EnableAction"
-                  class="tui-island__footer-button"
-                >
-                  Check
-                </button>
-              </tui-island>
+              <p class="tui-text_body-m">Dataset List</p>
             </div>
+          </div>
+          <div class="row justify-content-between">
+            <table tuiTable class="table" [columns]="columns()">
+              <thead>
+                <tr tuiThGroup>
+                  <th tuiTh [resizable]="true">#</th>
+                  <th tuiTh [resizable]="true">Name</th>
+                  <th tuiTh [resizable]="true">After Nan Records</th>
+                  <th tuiTh [resizable]="true">Total Records</th>
+                  <th tuiTh [resizable]="true">Created On</th>
+                  <th tuiTh [resizable]="true">Action</th>
+                </tr>
+              </thead>
+              <tbody tuiTbody [data]="selectedList()">
+                @for(item of selectedList(); track item.id) {
+                <tr tuiTr>
+                  <td *tuiCell="'date'" tuiTd>
+                    {{ item.date | date : 'dd/MM/yyyy' }}
+                  </td>
+                  <td *tuiCell="'id'" tuiTd>
+                    <button
+                      tuiButton
+                      appearance="flat"
+                      size="s"
+                      title="View"
+                      shape="rounded"
+                      type="button"
+                      (click)="view(item.id)"
+                    >
+                      View
+                    </button>
+                  </td>
+                </tr>
+                }
+              </tbody>
+              <tfoot>
+                <tr>
+                  <td [colSpan]="columns().length">
+                    <tui-table-pagination
+                      class="tui-space_top-2"
+                      [total]="total()"
+                      [size]="size()"
+                      (pageChange)="page.set($event)"
+                    ></tui-table-pagination>
+                  </td>
+                </tr>
+              </tfoot>
+            </table>
           </div>
         </div>
       </div>
     </div>
   `,
   styleUrl: './home.component.css',
-  // changeDetection: ChangeDetectionStrategy.OnPush,
-  animations: [
-    collapseAnimation(),
-    collapseOnLeaveAnimation(),
-    expandOnEnterAnimation(),
-  ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class HomeComponent {
-  showFileUpload = false;
-  EnableAction = false;
-  readyFile = false;
-  uploadLoading = false;
+export class HomeComponent implements OnInit {
+  readyFile = signal<boolean>(false);
+  uploadLoading = signal<boolean>(false);
 
-  file_name = '';
+  file_name = signal<string>('');
+  open = signal<boolean>(false); //Dashboard
+
+  // DataTable
+  columns = signal<string[]>([]);
+  datasetList = signal<any[]>([]);
+  page = signal<number>(0);
+  size = signal<number>(5);
+  total = computed(() => this.datasetList().length);
+
+  // DataTable Pagination
+  startingPoint = computed(() => this.page() * this.size());
+  endingPoint = computed(() => this.page() * this.size() + this.size());
+  selectedList = computed(() =>
+    this.datasetList().slice(this.startingPoint(), this.endingPoint())
+  );
 
   constructor(private readonly importDataService: ImportDataService) {}
 
+  ngOnInit(): void {
+    this.columns.set(['no', 'name', 'nan', 'total', 'date', 'id']);
+
+    this.importDataService.getAll().subscribe((list: any) => {
+      const DataTable = list.map((el: any, index: number) => ({
+        id: el.id,
+        no: index + 1,
+        name: el.Name,
+        date: el.created_at,
+        nan: el.AfterNanRecords,
+        total: el.TotalRecords,
+      }));
+
+      this.datasetList.set(DataTable);
+    });
+  }
+
+  // File Handling
   readonly control = new FormControl();
 
   readonly rejectedFiles$ = new Subject<TuiFileLike | null>();
@@ -230,8 +282,9 @@ export class HomeComponent {
 
     return timer(1000).pipe(
       map(() => {
-        this.readyFile = true;
-        this.file_name = file.name;
+        this.readyFile.set(true);
+        this.file_name.set(file.name);
+
         return file;
       }),
       finalize(() => this.loadingFiles$.next(null))
@@ -239,7 +292,16 @@ export class HomeComponent {
   }
 
   onSubmit() {
-    this.uploadLoading = true;
-    this.importDataService.import(this.file_name).subscribe();
+    this.uploadLoading.set(true);
+    this.importDataService.import(this.file_name()).subscribe();
+  }
+
+  onDropdown() {
+    this.open.update((value) => !value);
+    this.removeFile();
+  }
+
+  view(item: string) {
+    // this.router.navigate(['/portal', 'view', item]);
   }
 }

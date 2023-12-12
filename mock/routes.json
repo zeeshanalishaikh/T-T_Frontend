@@ -1,0 +1,4 @@
+{
+    "/api/v1/file/resultdetail" : "/file",
+    "/api/v1/file/resultdata/:id" : "/records?dataset_id=:id&_limit=20"
+}

@@ -6,7 +6,7 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "mock": "json-server --port 5000 --host 127.0.0.1 --watch mock/DB.json",
+    "mock": "json-server --port 5000 --host 127.0.0.1 --watch mock/DB.json --routes mock/routes.json",
     "test": "ng test"
   },
   "private": true,
