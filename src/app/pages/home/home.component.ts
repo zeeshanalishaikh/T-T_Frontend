@@ -23,6 +23,7 @@ import {
   TuiButtonModule,
   TuiDropdownModule,
   TuiDialogService,
+  TuiAlertService,
 } from '@taiga-ui/core';
 import {
   TuiCarouselModule,
@@ -228,51 +229,12 @@ import { ViewComponent } from '../../components/view/view.component';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HomeComponent implements OnInit {
+  // Input Box
   readyFile = signal<boolean>(false);
   uploadLoading = signal<boolean>(false);
-
   file_name = signal<string>('');
-  open = signal<boolean>(false); //Dashboard
 
-  // DataTable
-  columns = signal<string[]>([]);
-  datasetList = signal<any[]>([]);
-  page = signal<number>(0);
-  size = signal<number>(5);
-  total = computed(() => this.datasetList().length);
-
-  // DataTable Pagination
-  startingPoint = computed(() => this.page() * this.size());
-  endingPoint = computed(() => this.page() * this.size() + this.size());
-  selectedList = computed(() =>
-    this.datasetList().slice(this.startingPoint(), this.endingPoint())
-  );
-
-  constructor(
-    @Inject(TuiDialogService)
-    private readonly dialogs: TuiDialogService,
-    @Inject(Injector)
-    private readonly injector: Injector,
-    @Inject(DatasetService)
-    private readonly datasetService: DatasetService
-  ) {}
-
-  ngOnInit(): void {
-    this.columns.set(['no', 'name', 'nan', 'total', 'date', 'id']);
-
-    this.datasetService.getAll().subscribe((list: any) => {
-      const DataTable = list.map((el: any, index: number) => ({
-        id: el.id,
-        no: index + 1,
-        name: el.Name,
-        date: el.created_at,
-        nan: el.AfterNanRecords,
-        total: el.TotalRecords,
-      }));
-
-      this.datasetList.set(DataTable);
-    });
-  }
+  open = signal<boolean>(false); //DropDown
 
   // File Handling
   readonly control = new FormControl();
@@ -310,9 +272,65 @@ export class HomeComponent implements OnInit {
     );
   }
 
+  // DataTable
+  columns = signal<string[]>([]);
+  datasetList = signal<any[]>([]);
+  page = signal<number>(0);
+  size = signal<number>(5);
+  total = computed(() => this.datasetList().length);
+
+  // DataTable Pagination
+  startingPoint = computed(() => this.page() * this.size());
+  endingPoint = computed(() => this.page() * this.size() + this.size());
+  selectedList = computed(() =>
+    this.datasetList().slice(this.startingPoint(), this.endingPoint())
+  );
+
+  constructor(
+    @Inject(TuiDialogService)
+    private readonly dialogs: TuiDialogService,
+    @Inject(Injector)
+    private readonly injector: Injector,
+    @Inject(TuiAlertService)
+    private readonly alerts: TuiAlertService,
+    @Inject(DatasetService)
+    private readonly datasetService: DatasetService
+  ) {}
+
+  ngOnInit(): void {
+    this.columns.set(['no', 'name', 'nan', 'total', 'date', 'id']);
+    this.fetchData();
+  }
+
+  fetchData() {
+    this.datasetService.getAll().subscribe((list: any) => {
+      const DataTable = list.map((el: any, index: number) => ({
+        id: el?.id,
+        no: index + 1,
+        name: el?.Name || el?.fileName,
+        date: el?.created_at,
+        nan: el?.AfterNanRecords,
+        total: el?.TotalRecords,
+      }));
+
+      this.datasetList.set(DataTable);
+    });
+  }
+
   onSubmit() {
     this.uploadLoading.set(true);
-    this.datasetService.create(this.file_name()).subscribe();
+    this.datasetService.create(this.file_name()).subscribe(() => {
+      this.alerts
+        .open(`Dataset Imported Successfully`, {
+          label: 'Notification',
+          status: 'success',
+        })
+        .subscribe();
+
+      this.open.set(false);
+      this.uploadLoading.set(false);
+      this.fetchData();
+    });
   }
 
   onDropdown() {
