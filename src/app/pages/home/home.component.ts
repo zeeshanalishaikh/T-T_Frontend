@@ -24,8 +24,10 @@ import {
   TuiDropdownModule,
   TuiDialogService,
   TuiAlertService,
+  TuiLinkModule,
 } from '@taiga-ui/core';
 import {
+  TuiBreadcrumbsModule,
   TuiCarouselModule,
   TuiIslandModule,
   TuiInputFilesModule,
@@ -54,10 +56,12 @@ import { ViewComponent } from '../../components/view/view.component';
     TuiRootModule,
     TuiDialogModule,
     TuiSvgModule,
+    TuiLinkModule,
     TuiButtonModule,
     TuiDropdownModule,
     TuiTableModule,
     TuiTablePaginationModule,
+    TuiBreadcrumbsModule,
     TuiCarouselModule,
     TuiIslandModule,
     TuiActionModule,
@@ -72,6 +76,30 @@ import { ViewComponent } from '../../components/view/view.component';
           class="py-3 px-4 my-3"
           style="background-color: #fff; border-radius: 20px;"
         >
+          <div class="row pb-2">
+            <div class="col d-flex align-items-center">
+              <a
+                tuiButton
+                size="xs"
+                routerLink=""
+                icon="tuiIconChevronLeft"
+                style="margin-right: 10px;"
+              >
+              </a>
+              <tui-breadcrumbs>
+                <ng-container>
+                  <a *tuiItem tuiLink routerLink="" icon="tuiIconHome"> </a>
+                </ng-container>
+                @for(item of breadcrumbs; track item.caption) {
+                <ng-container>
+                  <a *tuiItem tuiLink [routerLink]="item.routerLink">
+                    {{ item.caption }}
+                  </a>
+                </ng-container>
+                }
+              </tui-breadcrumbs>
+            </div>
+          </div>
           <div class="row pb-2 justify-content-between">
             <div class="col-2">
               <h1 class="tui-text_h4 mb-3 mt-2">Dashboard</h1>
@@ -98,8 +126,14 @@ import { ViewComponent } from '../../components/view/view.component';
               <button tuiButton appearance="primary" size="s" class="m-1">
                 Perform E.D.A
               </button>
-              <button tuiButton appearance="primary" size="s" class="m-1">
-                Check Accuracy
+              <button
+                tuiButton
+                appearance="primary"
+                size="s"
+                class="m-1"
+                [routerLink]="['/analytics']"
+              >
+                Analytics
               </button>
             </div>
             <div class="col-2 d-flex justify-content-end">
@@ -229,6 +263,13 @@ import { ViewComponent } from '../../components/view/view.component';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HomeComponent implements OnInit {
+  breadcrumbs = [
+    {
+      caption: 'Dashboard',
+      routerLink: '/home',
+    },
+  ];
+
   // Input Box
   readyFile = signal<boolean>(false);
   uploadLoading = signal<boolean>(false);
