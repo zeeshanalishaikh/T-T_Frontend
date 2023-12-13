@@ -1,9 +1,39 @@
 {
-  "dataset": [
+  "datasets": [
     {
       "id": 1,
-      "name": "CKD dataset",
-      "records": 1000
+      "Name": "dataset 1.csv",
+      "TotalRecords": 200,
+      "AfterNanRecords": 23,
+      "created_at": "2023-12-10T22:11:54.731Z"
+    },
+    {
+      "id": 2,
+      "Name": "dataset 2.csv",
+      "TotalRecords": 200,
+      "AfterNanRecords": 12,
+      "created_at": "2023-12-10T22:11:54.731Z"
+    },
+    {
+      "id": 3,
+      "Name": "dataset 3.csv",
+      "TotalRecords": 200,
+      "AfterNanRecords": 19,
+      "created_at": "2023-12-10T22:11:54.731Z"
+    },
+    {
+      "id": 4,
+      "Name": "dataset 4.csv",
+      "TotalRecords": 200,
+      "AfterNanRecords": 37,
+      "created_at": "2023-12-10T22:11:54.731Z"
+    },
+    {
+      "id": 5,
+      "Name": "dataset 5.csv",
+      "TotalRecords": 200,
+      "AfterNanRecords": 25,
+      "created_at": "2023-12-10T22:11:54.731Z"
     }
   ],
   "records": [
@@ -29006,43 +29036,6 @@
       "pe": "yes",
       "ane": "yes",
       "classification": "notckd"
-    }
-  ],
-  "file": [
-    {
-      "AfterNanRecords": 23,
-      "Name": "dataset 1.csv",
-      "TotalRecords": 200,
-      "created_at": "2023-12-10T22:11:54.731Z",
-      "id": 1
-    },
-    {
-      "AfterNanRecords": 12,
-      "Name": "dataset 2.csv",
-      "TotalRecords": 200,
-      "created_at": "2023-12-10T22:11:54.731Z",
-      "id": 2
-    },
-    {
-      "AfterNanRecords": 19,
-      "Name": "dataset 3.csv",
-      "TotalRecords": 200,
-      "created_at": "2023-12-10T22:11:54.731Z",
-      "id": 3
-    },
-    {
-      "AfterNanRecords": 37,
-      "Name": "dataset 4.csv",
-      "TotalRecords": 200,
-      "created_at": "2023-12-10T22:11:54.731Z",
-      "id": 4
-    },
-    {
-      "AfterNanRecords": 25,
-      "Name": "dataset 5.csv",
-      "TotalRecords": 200,
-      "created_at": "2023-12-10T22:11:54.731Z",
-      "id": 5
     }
   ]
 }

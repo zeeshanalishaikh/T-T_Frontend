@@ -3,16 +3,26 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
+  Inject,
+  Injector,
   OnInit,
   signal,
 } from '@angular/core';
 import { RouterModule } from '@angular/router';
+
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 
+import { Observable, of, Subject, timer } from 'rxjs';
+import { finalize, map, switchMap } from 'rxjs/operators';
+
 import {
+  TuiRootModule,
+  TuiDialogModule,
   TuiSvgModule,
   TuiButtonModule,
   TuiDropdownModule,
+  TuiDialogService,
 } from '@taiga-ui/core';
 import {
   TuiCarouselModule,
@@ -27,10 +37,10 @@ import {
   TuiTablePaginationModule,
 } from '@taiga-ui/addon-table';
 
-import { Observable, of, Subject, timer } from 'rxjs';
-import { finalize, map, switchMap } from 'rxjs/operators';
-import { FormControl, ReactiveFormsModule } from '@angular/forms';
-import { ImportDataService } from '@service/ImportData.service';
+import { PolymorpheusComponent } from '@tinkoff/ng-polymorpheus';
+
+import { DatasetService } from '@service/datasets.service';
+import { ViewComponent } from '../../components/view/view.component';
 
 @Component({
   selector: 'app-home',
@@ -40,6 +50,8 @@ import { ImportDataService } from '@service/ImportData.service';
     RouterModule,
     ReactiveFormsModule,
     HttpClientModule,
+    TuiRootModule,
+    TuiDialogModule,
     TuiSvgModule,
     TuiButtonModule,
     TuiDropdownModule,
@@ -51,7 +63,7 @@ import { ImportDataService } from '@service/ImportData.service';
     TuiPaginationModule,
     TuiInputFilesModule,
   ],
-  providers: [ImportDataService],
+  providers: [DatasetService],
   template: `
     <div class="home">
       <div class="container">
@@ -236,12 +248,19 @@ export class HomeComponent implements OnInit {
     this.datasetList().slice(this.startingPoint(), this.endingPoint())
   );
 
-  constructor(private readonly importDataService: ImportDataService) {}
+  constructor(
+    @Inject(TuiDialogService)
+    private readonly dialogs: TuiDialogService,
+    @Inject(Injector)
+    private readonly injector: Injector,
+    @Inject(DatasetService)
+    private readonly datasetService: DatasetService
+  ) {}
 
   ngOnInit(): void {
     this.columns.set(['no', 'name', 'nan', 'total', 'date', 'id']);
 
-    this.importDataService.getAll().subscribe((list: any) => {
+    this.datasetService.getAll().subscribe((list: any) => {
       const DataTable = list.map((el: any, index: number) => ({
         id: el.id,
         no: index + 1,
@@ -293,7 +312,7 @@ export class HomeComponent implements OnInit {
 
   onSubmit() {
     this.uploadLoading.set(true);
-    this.importDataService.import(this.file_name()).subscribe();
+    this.datasetService.create(this.file_name()).subscribe();
   }
 
   onDropdown() {
@@ -301,7 +320,21 @@ export class HomeComponent implements OnInit {
     this.removeFile();
   }
 
-  view(item: string) {
-    // this.router.navigate(['/portal', 'view', item]);
+  view(data: number) {
+    this.dialogs
+      .open<number>(new PolymorpheusComponent(ViewComponent, this.injector), {
+        data,
+        dismissible: true,
+        label: 'Dataset Sample',
+        size: 'auto',
+      })
+      .subscribe({
+        next: (data: any) => {
+          console.info(`Dialog emitted data = ${data}`);
+        },
+        complete: () => {
+          console.info('Dialog closed');
+        },
+      });
   }
 }
