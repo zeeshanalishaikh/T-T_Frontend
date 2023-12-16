@@ -1,5 +1,6 @@
 {
   "/api/v1/datasets": "/datasets",
   "/api/v1/datasets/:id/records": "/records?dataset_id=:id",
-  "/api/v1/datasets/:id/records/sample": "/records?dataset_id=:id&_limit=20"
+  "/api/v1/datasets/:id/records/sample": "/records?dataset_id=:id&_limit=20",
+  "/api/v1/algorithm/knn?id=1": "/algorithm/1"
 }

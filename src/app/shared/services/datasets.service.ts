@@ -4,7 +4,7 @@ import { environment } from '@env/environment';
 import { Observable } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'any',
 })
 export class DatasetService {
   private endpoint = `${environment.baseUrl}/datasets`;
