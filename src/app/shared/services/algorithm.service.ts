@@ -7,12 +7,12 @@ import { Observable } from 'rxjs';
   providedIn: 'any',
 })
 export class AlgorithmService {
-  private endpoint = `${environment.baseUrl}/algorithm`;
+  private endpoint = `${environment.baseUrl}/algo`;
 
   constructor(private http: HttpClient) {}
 
-  public calculateResult(algorithm: string, dataset_id: number): Observable<any> {
-    const URL = `${this.endpoint}/${algorithm}?id=${dataset_id}`;
-    return this.http.get<any>(URL);
+  public calculateResult(algorithm: string, dataset_id: number, body: any): Observable<any> {
+    const URL = `${this.endpoint}/${algorithm}?_id=${dataset_id}`;
+    return this.http.post<any>(URL, body);
   }
 }

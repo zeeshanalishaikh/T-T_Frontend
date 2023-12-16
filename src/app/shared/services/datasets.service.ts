@@ -7,17 +7,17 @@ import { Observable } from 'rxjs';
   providedIn: 'any',
 })
 export class DatasetService {
-  private endpoint = `${environment.baseUrl}/datasets`;
+  private endpoint = `${environment.baseUrl}/file`;
 
   constructor(private http: HttpClient) {}
 
   public getAll(): Observable<any> {
-    const URL = `${this.endpoint}`;
+    const URL = `${this.endpoint}/result/data`;
     return this.http.get<any>(URL);
   }
 
   public create(fileName: string): Observable<any> {
-    const URL = `${this.endpoint}`;
+    const URL = `${this.endpoint}/import`;
 
     return this.http.post<any>(URL, {
       fileName,
@@ -29,8 +29,8 @@ export class DatasetService {
     return this.http.get<any>(URL);
   }
 
-  public getSample(dataset_id: number): Observable<any> {
-    const URL = `${this.endpoint}/${dataset_id}/records/sample`;
+  public getSample(id: number): Observable<any> {
+    const URL = `${this.endpoint}/result/datadetail?id=${id}`;
     return this.http.get<any>(URL);
   }
 }

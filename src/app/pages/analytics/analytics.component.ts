@@ -48,6 +48,7 @@ import { AnalyticResultComponent } from '../../components/analyticResult/analyti
 import { AlgorithmService } from '@service/algorithm.service';
 import { DatasetService } from '@service/datasets.service';
 import { DatasetsModel } from '@model/dataset.interface';
+import { RecordsModel } from '@model/records.interface';
 
 const angularImports = [
   CommonModule,
@@ -370,11 +371,11 @@ const TaigaImports = [
                   <div class="row my-4">
                     <div class="col">
                       <tui-input-number
-                        formControlName="sob"
+                        formControlName="sod"
                         [tuiTextfieldCleaner]="true"
                         [step]="1"
                       >
-                        Sob
+                        Sod
                       </tui-input-number>
                     </div>
                     <div class="col">
@@ -487,18 +488,6 @@ const TaigaImports = [
                       </tui-select>
                     </div>
                   </div>
-                  <div class="row my-4">
-                    <div class="col-3">
-                      <tui-select formControlName="classification">
-                        Classification
-                        <input tuiTextfield placeholder="Choose a value" />
-                        <tui-data-list-wrapper
-                          *tuiDataList
-                          [items]="['notckd', 'ckd']"
-                        ></tui-data-list-wrapper>
-                      </tui-select>
-                    </div>
-                  </div>
                 </form>
               } @case ('logistic') {
               <div>Logistic</div>
@@ -594,7 +583,7 @@ export class AnalyticsComponent implements OnInit {
     bgr: new FormControl(),
     bu: new FormControl(),
     sc: new FormControl(),
-    sob: new FormControl(),
+    sod: new FormControl(),
     pot: new FormControl(),
     hemo: new FormControl(),
     pcv: new FormControl(),
@@ -606,7 +595,6 @@ export class AnalyticsComponent implements OnInit {
     appet: new FormControl(),
     pe: new FormControl(),
     ane: new FormControl(),
-    classification: new FormControl(),
   });
 
   constructor(
@@ -620,13 +608,40 @@ export class AnalyticsComponent implements OnInit {
     private readonly algorithmService: AlgorithmService,
     @Inject(DatasetService)
     private readonly datasetService: DatasetService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.datasetService.getAll().subscribe((datasetList: DatasetsModel[]) => {
       this.datasetList = datasetList;
       this.datasetNames = datasetList.map((el) => el?.Name);
     });
+
+    this.knnFormController.setValue({
+      "age": 48,
+      "bp": 80,
+      "sg": 1.02,
+      "al": 1,
+      "su": 0,
+      "bgr": 121,
+      "bu": 36,
+      "sc": 1.2,
+      "sod": 0,
+      "pot": 0,
+      "hemo": 15.4,
+      "pcv": 44,
+      "wc": 7800,
+      "rc": 5.2,
+      "rbc": "",
+      "pc": "normal",
+      "pcc": "notpresent",
+      "ba": "notpresent",
+      "htn": "yes",
+      "dm": "yes",
+      "cad": "no",
+      "appet": "good",
+      "pe": "no",
+      "ane": "no"
+    })
   }
 
   stepValidation(): boolean {
@@ -650,8 +665,43 @@ export class AnalyticsComponent implements OnInit {
       (el: DatasetsModel) => el.Name === this.datasetController.value
     );
 
+    let value: Partial<RecordsModel> = {};
+
+    switch (this.algorithmController.value) {
+      case 'knn': {
+        const data = this.knnFormController.value;
+        value = {
+          age: data.age || 0,
+          bp: data.bp || 0,
+          sg: data.sg || 0,
+          al: data.al || 0,
+          su: data.su || 0,
+          rbc: data.rbc || "",
+          pc: data.pc || "",
+          pcc: data.pcc || "",
+          ba: data.ba || "",
+          bgr: data.bgr || 0,
+          bu: data.bu || 0,
+          sc: data.sc || 0,
+          sod: data.sod || 0,
+          pot: data.pot || 0,
+          hemo: data.hemo || 0,
+          pcv: data.pcv || 0,
+          wc: data.wc || 0,
+          rc: data.rc || 0,
+          htn: data.htn || "",
+          dm: data.dm || "",
+          cad: data.cad || "",
+          appet: data.appet || "",
+          pe: data.pe || "",
+          ane: data.ane || "",
+        }
+        break;
+      }
+    }
+
     this.algorithmService
-      .calculateResult(algorithm, dataset!.id)
+      .calculateResult(algorithm, dataset!.id, value)
       .subscribe((data: any) => {
         this.dialogs
           .open<number>(

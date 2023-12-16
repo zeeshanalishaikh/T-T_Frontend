@@ -13,7 +13,7 @@ export interface RecordsModel {
   bgr: number;
   bu: number;
   sc: number;
-  sob: number;
+  sod: number;
   pot: number;
   hemo: number;
   pcv: number;
