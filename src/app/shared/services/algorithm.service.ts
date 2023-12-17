@@ -1,18 +1,28 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { environment } from '@env/environment';
 import { Observable } from 'rxjs';
+import { RecordsModel } from '@model/records.interface';
+import { URLGenerator } from '../util/endpointGenerator.util';
 
 @Injectable({
   providedIn: 'any',
 })
 export class AlgorithmService {
-  private endpoint = `${environment.baseUrl}/algorithm`;
+  constructor(
+    private http: HttpClient,
+    @Inject(URLGenerator)
+    private urlGenerator: URLGenerator
+  ) {}
 
-  constructor(private http: HttpClient) {}
-
-  public calculateResult(algorithm: string, dataset_id: number): Observable<any> {
-    const URL = `${this.endpoint}/${algorithm}?id=${dataset_id}`;
-    return this.http.get<any>(URL);
+  public calculateResult(
+    algorithm: string,
+    dataset_id: number,
+    body: Partial<RecordsModel>
+  ): Observable<any> {
+    const URL = this.urlGenerator.fetch('algorithm', 'calculateResult', [
+      { placeholder: '{algorithm}', value: algorithm },
+      { placeholder: '{dataset_id}', value: dataset_id },
+    ]);
+    return this.http.post<any>(URL, body);
   }
 }

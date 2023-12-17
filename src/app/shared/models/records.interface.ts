@@ -13,7 +13,7 @@ export interface RecordsModel {
   bgr: number;
   bu: number;
   sc: number;
-  sob: number;
+  sod: number;
   pot: number;
   hemo: number;
   pcv: number;
@@ -25,5 +25,5 @@ export interface RecordsModel {
   appet: 'poor' | 'good';
   pe: 'no' | 'yes';
   ane: 'no' | 'yes';
-  classification: 'notckd' | 'ckd';
+  classification?: 'notckd' | 'ckd';
 }
