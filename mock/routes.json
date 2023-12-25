@@ -1,5 +1,13 @@
 {
   "/api/v1/datasets": "/datasets",
+  "/api/v1/details/:id": "/details/1",
+  "/api/v1/nullCount/:id": "/nullCount/1",
+  "/api/v1/transposeNum/:id": "/transposeNum/1",
+  "/api/v1/transposeCat/:id": "/transposeCat/1",
+  "/api/v1/missingData/:id": "/missingData/1",
+  "/api/v1/pairPlot/:id": "/pairPlot/1",
+  "/api/v1/allRatio/:id": "/allRatio/1",
+  "/api/v1/outLayerValue/:id": "/outLayerValue/1",
   "/api/v1/datasets/:id/records": "/records?dataset_id=:id",
   "/api/v1/datasets/:id/records/sample": "/records?dataset_id=:id&_limit=20",
   "/api/v1/algorithm/:algorithm?id=1": "/algorithm/1"

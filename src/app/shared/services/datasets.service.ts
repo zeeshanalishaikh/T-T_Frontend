@@ -18,6 +18,70 @@ export class DatasetService {
     return this.http.get<any>(URL);
   }
 
+  public checkStates(dataset_id: number): Observable<any> {
+    const URL = this.urlGenerator.fetch('dataset', 'checkStates', [
+      { placeholder: '{dataset_id}', value: dataset_id },
+    ]);
+
+    return this.http.get<any>(URL);
+  }
+
+  public checkNullCount(dataset_id: number): Observable<any> {
+    const URL = this.urlGenerator.fetch('dataset', 'checkNullCount', [
+      { placeholder: '{dataset_id}', value: dataset_id },
+    ]);
+
+    return this.http.get<any>(URL);
+  }
+
+  public checkTransposeNum(dataset_id: number): Observable<any> {
+    const URL = this.urlGenerator.fetch('dataset', 'checkTransposeNum', [
+      { placeholder: '{dataset_id}', value: dataset_id },
+    ]);
+
+    return this.http.get<any>(URL);
+  }
+
+  public checkTransposeCat(dataset_id: number): Observable<any> {
+    const URL = this.urlGenerator.fetch('dataset', 'checkTransposeCat', [
+      { placeholder: '{dataset_id}', value: dataset_id },
+    ]);
+
+    return this.http.get<any>(URL);
+  }
+
+  public checkMissingData(dataset_id: number): Observable<any> {
+    const URL = this.urlGenerator.fetch('dataset', 'checkMissingData', [
+      { placeholder: '{dataset_id}', value: dataset_id },
+    ]);
+
+    return this.http.get<any>(URL);
+  }
+
+  public checkPairPlot(dataset_id: number): Observable<any> {
+    const URL = this.urlGenerator.fetch('dataset', 'checkPairPlot', [
+      { placeholder: '{dataset_id}', value: dataset_id },
+    ]);
+
+    return this.http.get<any>(URL);
+  }
+  
+  public checkAllRatio(dataset_id: number): Observable<any> {
+    const URL = this.urlGenerator.fetch('dataset', 'checkAllRatio', [
+      { placeholder: '{dataset_id}', value: dataset_id },
+    ]);
+
+    return this.http.get<any>(URL);
+  }
+
+  public checkOutLayerValue(dataset_id: number): Observable<any> {
+    const URL = this.urlGenerator.fetch('dataset', 'checkOutLayerValue', [
+      { placeholder: '{dataset_id}', value: dataset_id },
+    ]);
+
+    return this.http.get<any>(URL);
+  }
+
   public create(fileName: string): Observable<any> {
     const URL = this.urlGenerator.fetch('dataset', 'create');
 

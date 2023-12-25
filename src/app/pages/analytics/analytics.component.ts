@@ -13,7 +13,7 @@ import {
   FormGroup,
 } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { HttpClientModule, HttpClient } from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 
 import {
   TuiRootModule,
@@ -88,7 +88,7 @@ const TaigaImports = [
   standalone: true,
   imports: [...angularImports, ...TaigaImports],
   template: `
-    <div class="home">
+    <div class="analytic">
       <div class="container">
         <div
           class="py-3 px-4 my-3"

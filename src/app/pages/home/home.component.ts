@@ -42,8 +42,6 @@ import {
 
 import { PolymorpheusComponent } from '@tinkoff/ng-polymorpheus';
 
-
-
 import { DatasetService } from '@service/datasets.service';
 import { ViewComponent } from '../../components/view/view.component';
 
@@ -125,7 +123,13 @@ import { ViewComponent } from '../../components/view/view.component';
           </div>
           <div class="row my-3 justify-content-between">
             <div class="col">
-              <button tuiButton appearance="primary" size="s" class="m-1">
+              <button
+                tuiButton
+                appearance="primary"
+                size="s"
+                class="m-1"
+                [routerLink]="['/eda']"
+              >
                 Perform E.D.A
               </button>
               <button
