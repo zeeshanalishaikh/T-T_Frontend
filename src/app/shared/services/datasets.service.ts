@@ -82,6 +82,14 @@ export class DatasetService {
     return this.http.get<any>(URL);
   }
 
+  public checkCorrelationValue(dataset_id: number): Observable<any> {
+    const URL = this.urlGenerator.fetch('dataset', 'checkCorrelationValue', [
+      { placeholder: '{dataset_id}', value: dataset_id },
+    ]);
+
+    return this.http.get<any>(URL);
+  }
+
   public create(fileName: string): Observable<any> {
     const URL = this.urlGenerator.fetch('dataset', 'create');
 

@@ -7,6 +7,7 @@
   "/api/v1/missingData/:id": "/missingData/1",
   "/api/v1/pairPlot/:id": "/pairPlot/1",
   "/api/v1/allRatio/:id": "/allRatio/1",
+  "/api/v1/correlation/:id": "/correlation/1",
   "/api/v1/outLayerValue/:id": "/outLayerValue/1",
   "/api/v1/datasets/:id/records": "/records?dataset_id=:id",
   "/api/v1/datasets/:id/records/sample": "/records?dataset_id=:id&_limit=20",

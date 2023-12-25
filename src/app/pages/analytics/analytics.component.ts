@@ -151,12 +151,10 @@ const TaigaImports = [
                     @if(activeTab > 0){
                     <div>
                       <strong>Selected: </strong>
-                      @switch (algorithmController.value){ 
-                        @case ('knn') { K-NN Algorithm } 
-                        @case ('logistic') { Logistic Algorithm }
-                        @case ('xgboost') { XGBoost Algorithm } 
-                        @case ('catboost') { CatBoost Algorithm } 
-                      }
+                      @switch (algorithmController.value){ @case ('knn') { K-NN
+                      Algorithm } @case ('logistic') { Logistic Algorithm }
+                      @case ('xgboost') { XGBoost Algorithm } @case ('catboost')
+                      { CatBoost Algorithm } }
                     </div>
                     }
                   </div>
@@ -166,334 +164,331 @@ const TaigaImports = [
             </div>
           </div>
           <div class="row justify-content-center py-4">
-            @switch (activeTab) 
-            { 
-              @case (0) {
-              <div class="col-9">
-                <form tuiGroup [collapsed]="false">
-                  <tui-radio-block
-                    contentAlign="right"
-                    [formControl]="algorithmController"
-                    item="knn"
-                    size="l"
-                  >
-                    <div class="content">
-                      <strong>knn</strong>
-                      <div>
-                        An orange is a fruit of various citrus species in the
-                        family Rutaceae
-                      </div>
+            @switch (activeTab) { @case (0) {
+            <div class="col-9">
+              <form tuiGroup [collapsed]="false">
+                <tui-radio-block
+                  contentAlign="right"
+                  [formControl]="algorithmController"
+                  item="knn"
+                  size="l"
+                >
+                  <div class="content">
+                    <strong>knn</strong>
+                    <div>
+                      An orange is a fruit of various citrus species in the
+                      family Rutaceae
                     </div>
-                  </tui-radio-block>
-                  <tui-radio-block
-                    contentAlign="right"
-                    [formControl]="algorithmController"
-                    item="logistic"
-                    size="l"
-                  >
-                    <div class="content">
-                      <strong>Logistic</strong>
-                      <div>
-                        Not to be confused with neither
-                        <em>pines</em>
-                        nor
-                        <em>apples</em>
-                      </div>
+                  </div>
+                </tui-radio-block>
+                <tui-radio-block
+                  contentAlign="right"
+                  [formControl]="algorithmController"
+                  item="logistic"
+                  size="l"
+                >
+                  <div class="content">
+                    <strong>Logistic</strong>
+                    <div>
+                      Not to be confused with neither
+                      <em>pines</em>
+                      nor
+                      <em>apples</em>
                     </div>
-                  </tui-radio-block>
-                  <tui-radio-block
-                    contentAlign="right"
-                    [formControl]="algorithmController"
-                    item="xgboost"
-                    size="l"
-                  >
-                    <div class="content">
-                      <strong>xgBoost</strong>
-                      <div>
-                        Not to be confused with neither
-                        <em>pines</em>
-                        nor
-                        <em>apples</em>
-                      </div>
+                  </div>
+                </tui-radio-block>
+                <tui-radio-block
+                  contentAlign="right"
+                  [formControl]="algorithmController"
+                  item="xgboost"
+                  size="l"
+                >
+                  <div class="content">
+                    <strong>xgBoost</strong>
+                    <div>
+                      Not to be confused with neither
+                      <em>pines</em>
+                      nor
+                      <em>apples</em>
                     </div>
-                  </tui-radio-block>
-                  <tui-radio-block
-                    contentAlign="right"
-                    [formControl]="algorithmController"
-                    item="catboost"
-                    size="l"
-                  >
-                    <div class="content">
-                      <strong>catBoost</strong>
-                      <div>
-                        Not to be confused with neither
-                        <em>pines</em>
-                        nor
-                        <em>apples</em>
-                      </div>
+                  </div>
+                </tui-radio-block>
+                <tui-radio-block
+                  contentAlign="right"
+                  [formControl]="algorithmController"
+                  item="catboost"
+                  size="l"
+                >
+                  <div class="content">
+                    <strong>catBoost</strong>
+                    <div>
+                      Not to be confused with neither
+                      <em>pines</em>
+                      nor
+                      <em>apples</em>
                     </div>
-                  </tui-radio-block>
-                </form>
+                  </div>
+                </tui-radio-block>
+              </form>
+            </div>
+            } @case (1) {
+            <div class="col-9">
+              <div class="row my-4">
+                <div class="col-6">
+                  <tui-select [formControl]="datasetController">
+                    Dataset
+                    <input tuiTextfield placeholder="Choose a dataset" />
+                    <tui-data-list-wrapper
+                      *tuiDataList
+                      [items]="datasetNames"
+                    ></tui-data-list-wrapper>
+                  </tui-select>
+                </div>
               </div>
-              } @case (1) {
-              <div class="col-9">
+              <form [formGroup]="formController">
                 <div class="row my-4">
-                  <div class="col-6">
-                    <tui-select [formControl]="datasetController">
-                      Dataset
-                      <input tuiTextfield placeholder="Choose a dataset" />
+                  <div class="col">
+                    <tui-input-number
+                      formControlName="age"
+                      [tuiTextfieldCleaner]="true"
+                      [step]="1"
+                      [min]="12"
+                      [max]="60"
+                    >
+                      Age
+                    </tui-input-number>
+                  </div>
+                  <div class="col">
+                    <tui-input-number
+                      formControlName="bp"
+                      [tuiTextfieldCleaner]="true"
+                      [step]="1"
+                    >
+                      Bp
+                    </tui-input-number>
+                  </div>
+                  <div class="col">
+                    <tui-input-number
+                      formControlName="sg"
+                      [tuiTextfieldCleaner]="true"
+                      [step]="0.1"
+                    >
+                      Sg
+                    </tui-input-number>
+                  </div>
+                  <div class="col">
+                    <tui-input-number
+                      formControlName="al"
+                      [tuiTextfieldCleaner]="true"
+                      [step]="1"
+                    >
+                      Al
+                    </tui-input-number>
+                  </div>
+                </div>
+                <div class="row my-4">
+                  <div class="col">
+                    <tui-input-number
+                      formControlName="su"
+                      [tuiTextfieldCleaner]="true"
+                      [step]="1"
+                    >
+                      Su
+                    </tui-input-number>
+                  </div>
+                  <div class="col">
+                    <tui-select formControlName="rbc">
+                      Rbc
+                      <input tuiTextfield placeholder="Choose a value" />
                       <tui-data-list-wrapper
                         *tuiDataList
-                        [items]="datasetNames"
+                        [items]="['abnormal', 'normal']"
+                      ></tui-data-list-wrapper>
+                    </tui-select>
+                  </div>
+                  <div class="col">
+                    <tui-select formControlName="pc">
+                      Pc
+                      <input tuiTextfield placeholder="Choose a value" />
+                      <tui-data-list-wrapper
+                        *tuiDataList
+                        [items]="['abnormal', 'normal']"
+                      ></tui-data-list-wrapper>
+                    </tui-select>
+                  </div>
+                  <div class="col">
+                    <tui-select formControlName="pcc">
+                      Pcc
+                      <input tuiTextfield placeholder="Choose a value" />
+                      <tui-data-list-wrapper
+                        *tuiDataList
+                        [items]="['notpresent', 'present']"
                       ></tui-data-list-wrapper>
                     </tui-select>
                   </div>
                 </div>
-                <form [formGroup]="formController">
-                  <div class="row my-4">
-                    <div class="col">
-                      <tui-input-number
-                        formControlName="age"
-                        [tuiTextfieldCleaner]="true"
-                        [step]="1"
-                        [min]="12"
-                        [max]="60"
-                      >
-                        Age
-                      </tui-input-number>
-                    </div>
-                    <div class="col">
-                      <tui-input-number
-                        formControlName="bp"
-                        [tuiTextfieldCleaner]="true"
-                        [step]="1"
-                      >
-                        Bp
-                      </tui-input-number>
-                    </div>
-                    <div class="col">
-                      <tui-input-number
-                        formControlName="sg"
-                        [tuiTextfieldCleaner]="true"
-                        [step]="0.1"
-                      >
-                        Sg
-                      </tui-input-number>
-                    </div>
-                    <div class="col">
-                      <tui-input-number
-                        formControlName="al"
-                        [tuiTextfieldCleaner]="true"
-                        [step]="1"
-                      >
-                        Al
-                      </tui-input-number>
-                    </div>
+                <div class="row my-4">
+                  <div class="col">
+                    <tui-select formControlName="ba">
+                      Ba
+                      <input tuiTextfield placeholder="Choose a value" />
+                      <tui-data-list-wrapper
+                        *tuiDataList
+                        [items]="['notpresent', 'present']"
+                      ></tui-data-list-wrapper>
+                    </tui-select>
                   </div>
-                  <div class="row my-4">
-                    <div class="col">
-                      <tui-input-number
-                        formControlName="su"
-                        [tuiTextfieldCleaner]="true"
-                        [step]="1"
-                      >
-                        Su
-                      </tui-input-number>
-                    </div>
-                    <div class="col">
-                      <tui-select formControlName="rbc">
-                        Rbc
-                        <input tuiTextfield placeholder="Choose a value" />
-                        <tui-data-list-wrapper
-                          *tuiDataList
-                          [items]="['abnormal', 'normal']"
-                        ></tui-data-list-wrapper>
-                      </tui-select>
-                    </div>
-                    <div class="col">
-                      <tui-select formControlName="pc">
-                        Pc
-                        <input tuiTextfield placeholder="Choose a value" />
-                        <tui-data-list-wrapper
-                          *tuiDataList
-                          [items]="['abnormal', 'normal']"
-                        ></tui-data-list-wrapper>
-                      </tui-select>
-                    </div>
-                    <div class="col">
-                      <tui-select formControlName="pcc">
-                        Pcc
-                        <input tuiTextfield placeholder="Choose a value" />
-                        <tui-data-list-wrapper
-                          *tuiDataList
-                          [items]="['notpresent', 'present']"
-                        ></tui-data-list-wrapper>
-                      </tui-select>
-                    </div>
+                  <div class="col">
+                    <tui-input-number
+                      formControlName="bgr"
+                      [tuiTextfieldCleaner]="true"
+                      [step]="1"
+                    >
+                      Bgr
+                    </tui-input-number>
                   </div>
-                  <div class="row my-4">
-                    <div class="col">
-                      <tui-select formControlName="ba">
-                        Ba
-                        <input tuiTextfield placeholder="Choose a value" />
-                        <tui-data-list-wrapper
-                          *tuiDataList
-                          [items]="['notpresent', 'present']"
-                        ></tui-data-list-wrapper>
-                      </tui-select>
-                    </div>
-                    <div class="col">
-                      <tui-input-number
-                        formControlName="bgr"
-                        [tuiTextfieldCleaner]="true"
-                        [step]="1"
-                      >
-                        Bgr
-                      </tui-input-number>
-                    </div>
-                    <div class="col">
-                      <tui-input-number
-                        formControlName="bu"
-                        [tuiTextfieldCleaner]="true"
-                        [step]="0.1"
-                      >
-                        Bu
-                      </tui-input-number>
-                    </div>
-                    <div class="col">
-                      <tui-input-number
-                        formControlName="sc"
-                        [tuiTextfieldCleaner]="true"
-                        [step]="1"
-                      >
-                        Sc
-                      </tui-input-number>
-                    </div>
+                  <div class="col">
+                    <tui-input-number
+                      formControlName="bu"
+                      [tuiTextfieldCleaner]="true"
+                      [step]="0.1"
+                    >
+                      Bu
+                    </tui-input-number>
                   </div>
-                  <div class="row my-4">
-                    <div class="col">
-                      <tui-input-number
-                        formControlName="sod"
-                        [tuiTextfieldCleaner]="true"
-                        [step]="1"
-                      >
-                        Sod
-                      </tui-input-number>
-                    </div>
-                    <div class="col">
-                      <tui-input-number
-                        formControlName="pot"
-                        [tuiTextfieldCleaner]="true"
-                        [step]="1"
-                      >
-                        Pot
-                      </tui-input-number>
-                    </div>
-                    <div class="col">
-                      <tui-input-number
-                        formControlName="hemo"
-                        [tuiTextfieldCleaner]="true"
-                        [step]="1"
-                      >
-                        Hemo
-                      </tui-input-number>
-                    </div>
-                    <div class="col">
-                      <tui-input-number
-                        formControlName="pcv"
-                        [tuiTextfieldCleaner]="true"
-                        [step]="1"
-                      >
-                        Pcv
-                      </tui-input-number>
-                    </div>
+                  <div class="col">
+                    <tui-input-number
+                      formControlName="sc"
+                      [tuiTextfieldCleaner]="true"
+                      [step]="1"
+                    >
+                      Sc
+                    </tui-input-number>
                   </div>
-                  <div class="row my-4">
-                    <div class="col">
-                      <tui-input-number
-                        formControlName="wc"
-                        [tuiTextfieldCleaner]="true"
-                        [step]="1"
-                      >
-                        Wc
-                      </tui-input-number>
-                    </div>
-                    <div class="col">
-                      <tui-input-number
-                        formControlName="rc"
-                        [tuiTextfieldCleaner]="true"
-                        [step]="1"
-                      >
-                        Rc
-                      </tui-input-number>
-                    </div>
-                    <div class="col">
-                      <tui-select formControlName="htn">
-                        Htn
-                        <input tuiTextfield placeholder="Choose a value" />
-                        <tui-data-list-wrapper
-                          *tuiDataList
-                          [items]="['no', 'yes']"
-                        ></tui-data-list-wrapper>
-                      </tui-select>
-                    </div>
-                    <div class="col">
-                      <tui-select formControlName="dm">
-                        Dm
-                        <input tuiTextfield placeholder="Choose a value" />
-                        <tui-data-list-wrapper
-                          *tuiDataList
-                          [items]="['no', 'yes']"
-                        ></tui-data-list-wrapper>
-                      </tui-select>
-                    </div>
+                </div>
+                <div class="row my-4">
+                  <div class="col">
+                    <tui-input-number
+                      formControlName="sod"
+                      [tuiTextfieldCleaner]="true"
+                      [step]="1"
+                    >
+                      Sod
+                    </tui-input-number>
                   </div>
-                  <div class="row my-4">
-                    <div class="col">
-                      <tui-select formControlName="cad">
-                        Cad
-                        <input tuiTextfield placeholder="Choose a value" />
-                        <tui-data-list-wrapper
-                          *tuiDataList
-                          [items]="['no', 'yes']"
-                        ></tui-data-list-wrapper>
-                      </tui-select>
-                    </div>
-                    <div class="col">
-                      <tui-select formControlName="appet">
-                        Appet
-                        <input tuiTextfield placeholder="Choose a value" />
-                        <tui-data-list-wrapper
-                          *tuiDataList
-                          [items]="['poor', 'good']"
-                        ></tui-data-list-wrapper>
-                      </tui-select>
-                    </div>
-                    <div class="col">
-                      <tui-select formControlName="pe">
-                        Pe
-                        <input tuiTextfield placeholder="Choose a value" />
-                        <tui-data-list-wrapper
-                          *tuiDataList
-                          [items]="['no', 'yes']"
-                        ></tui-data-list-wrapper>
-                      </tui-select>
-                    </div>
-                    <div class="col">
-                      <tui-select formControlName="ane">
-                        Ane
-                        <input tuiTextfield placeholder="Choose a value" />
-                        <tui-data-list-wrapper
-                          *tuiDataList
-                          [items]="['no', 'yes']"
-                        ></tui-data-list-wrapper>
-                      </tui-select>
-                    </div>
+                  <div class="col">
+                    <tui-input-number
+                      formControlName="pot"
+                      [tuiTextfieldCleaner]="true"
+                      [step]="1"
+                    >
+                      Pot
+                    </tui-input-number>
                   </div>
-                </form>
-              </div>
-              } 
-            }
+                  <div class="col">
+                    <tui-input-number
+                      formControlName="hemo"
+                      [tuiTextfieldCleaner]="true"
+                      [step]="1"
+                    >
+                      Hemo
+                    </tui-input-number>
+                  </div>
+                  <div class="col">
+                    <tui-input-number
+                      formControlName="pcv"
+                      [tuiTextfieldCleaner]="true"
+                      [step]="1"
+                    >
+                      Pcv
+                    </tui-input-number>
+                  </div>
+                </div>
+                <div class="row my-4">
+                  <div class="col">
+                    <tui-input-number
+                      formControlName="wc"
+                      [tuiTextfieldCleaner]="true"
+                      [step]="1"
+                    >
+                      Wc
+                    </tui-input-number>
+                  </div>
+                  <div class="col">
+                    <tui-input-number
+                      formControlName="rc"
+                      [tuiTextfieldCleaner]="true"
+                      [step]="1"
+                    >
+                      Rc
+                    </tui-input-number>
+                  </div>
+                  <div class="col">
+                    <tui-select formControlName="htn">
+                      Htn
+                      <input tuiTextfield placeholder="Choose a value" />
+                      <tui-data-list-wrapper
+                        *tuiDataList
+                        [items]="['no', 'yes']"
+                      ></tui-data-list-wrapper>
+                    </tui-select>
+                  </div>
+                  <div class="col">
+                    <tui-select formControlName="dm">
+                      Dm
+                      <input tuiTextfield placeholder="Choose a value" />
+                      <tui-data-list-wrapper
+                        *tuiDataList
+                        [items]="['no', 'yes']"
+                      ></tui-data-list-wrapper>
+                    </tui-select>
+                  </div>
+                </div>
+                <div class="row my-4">
+                  <div class="col">
+                    <tui-select formControlName="cad">
+                      Cad
+                      <input tuiTextfield placeholder="Choose a value" />
+                      <tui-data-list-wrapper
+                        *tuiDataList
+                        [items]="['no', 'yes']"
+                      ></tui-data-list-wrapper>
+                    </tui-select>
+                  </div>
+                  <div class="col">
+                    <tui-select formControlName="appet">
+                      Appet
+                      <input tuiTextfield placeholder="Choose a value" />
+                      <tui-data-list-wrapper
+                        *tuiDataList
+                        [items]="['poor', 'good']"
+                      ></tui-data-list-wrapper>
+                    </tui-select>
+                  </div>
+                  <div class="col">
+                    <tui-select formControlName="pe">
+                      Pe
+                      <input tuiTextfield placeholder="Choose a value" />
+                      <tui-data-list-wrapper
+                        *tuiDataList
+                        [items]="['no', 'yes']"
+                      ></tui-data-list-wrapper>
+                    </tui-select>
+                  </div>
+                  <div class="col">
+                    <tui-select formControlName="ane">
+                      Ane
+                      <input tuiTextfield placeholder="Choose a value" />
+                      <tui-data-list-wrapper
+                        *tuiDataList
+                        [items]="['no', 'yes']"
+                      ></tui-data-list-wrapper>
+                    </tui-select>
+                  </div>
+                </div>
+              </form>
+            </div>
+            } }
           </div>
           <div class="row justify-content-center py-4">
             <div class="col-9">
@@ -567,10 +562,10 @@ export class AnalyticsComponent implements OnInit {
   algorithmController = new FormControl();
   datasetController = new FormControl();
   formController = new FormGroup({
-    age: new FormControl(),
+    age: new FormControl(24),
     bp: new FormControl(),
     sg: new FormControl(),
-    al: new FormControl(),
+    al: new FormControl(24),
     su: new FormControl(),
     rbc: new FormControl(),
     pc: new FormControl(),
@@ -592,6 +587,61 @@ export class AnalyticsComponent implements OnInit {
     pe: new FormControl(),
     ane: new FormControl(),
   });
+
+  fetchValue = [
+    {
+      age: 64,
+      bp: 60,
+      sg: 1.015,
+      al: 2,
+      su: 0,
+      bgr: 303,
+      bu: 46.2,
+      sc: 0.8,
+      sod: 128.5,
+      pot: 5,
+      hemo: 10.1,
+      pcv: 36,
+      wc: 7800,
+      rc: 5.2,
+      rbc: '',
+      pc: 'normal',
+      pcc: 'notpresent',
+      ba: 'notpresent',
+      htn: 'yes',
+      dm: 'yes',
+      cad: 'no',
+      appet: 'good',
+      pe: 'no',
+      ane: 'no',
+    },
+    {
+      age: 48,
+      bp: 80,
+      sg: 1.02,
+      al: 1,
+      su: 0,
+      bgr: 121,
+      bu: 36,
+      sc: 1.2,
+      sod: 0,
+      pot: 0,
+      hemo: 15.4,
+      pcv: 44,
+      wc: 7800,
+      rc: 5.2,
+      rbc: '',
+      pc: 'normal',
+      pcc: 'notpresent',
+      ba: 'notpresent',
+      htn: 'yes',
+      dm: 'yes',
+      cad: 'no',
+      appet: 'good',
+      pe: 'no',
+      ane: 'no',
+    },
+  ];
 
   constructor(
     @Inject(TuiDialogService)
@@ -621,6 +671,9 @@ export class AnalyticsComponent implements OnInit {
         result = this.algorithmController.value ? false : true;
         this.formController.reset();
         this.datasetController.reset();
+        this.formController.setValue(
+          Math.random() < 0.5 ? this.fetchValue[0] : this.fetchValue[1]
+        );
         break;
     }
 
@@ -667,8 +720,8 @@ export class AnalyticsComponent implements OnInit {
         const data = {
           algorithm,
           plotted,
-          result
-        }
+          result,
+        };
         this.dialogs
           .open<number>(
             new PolymorpheusComponent(AnalyticResultComponent, this.injector),

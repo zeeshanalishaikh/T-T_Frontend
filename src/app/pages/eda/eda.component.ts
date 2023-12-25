@@ -505,6 +505,21 @@ const TaigaImports = [
               class="tui-text_body-xl text-center"
               style="color: var(--tui-success-fill); font-weight: 600;"
             >
+              Correlation Heatmap
+            </p>
+          </div>
+        </div>
+        <div class="row justify-content-center py-2">
+          <div class="col-12">
+            <div echarts [options]="correlationData()"></div>
+          </div>
+        </div>
+        <div class="row justify-content-center py-2">
+          <div class="col-12">
+            <p
+              class="tui-text_body-xl text-center"
+              style="color: var(--tui-success-fill); font-weight: 600;"
+            >
               Transpose Numerical
             </p>
           </div>
@@ -1672,6 +1687,7 @@ export class EdaComponent implements OnInit {
   MissingData = signal<EChartsOption>({});
   PairPlotData = signal<EChartsOption>({});
   outLayerData = signal<EChartsOption>({});
+  correlationData = signal<EChartsOption>({});
 
   constructor(
     @Inject(DatasetService)
@@ -1767,9 +1783,9 @@ export class EdaComponent implements OnInit {
       aria: {
         enabled: true,
         decal: {
-          show: true
-        }
-      }
+          show: true,
+        },
+      },
     };
   }
 
@@ -2055,9 +2071,9 @@ export class EdaComponent implements OnInit {
       aria: {
         enabled: true,
         decal: {
-          show: true
-        }
-      }
+          show: true,
+        },
+      },
     };
   }
 
@@ -2475,6 +2491,66 @@ export class EdaComponent implements OnInit {
     };
   }
 
+  createCorrelationChart(data: any): any {
+    const {
+      correlation_values,
+      xcolumn: xAxisCategories,
+      ycolumn: yAxisCategories,
+    } = data;
+
+    const value = (correlation_values as any[]).map((el: any) => [
+      (xAxisCategories as string[]).findIndex((x) => x == el.x),
+      (yAxisCategories as string[]).findIndex((y) => y == el.y),
+      el.value,
+    ]).filter(((el: any) => el[2] > 0))
+
+    return {
+      tooltip: {},
+      grid: {
+        height: '50%',
+        top: '10%',
+      },
+      xAxis: {
+        type: 'category',
+        data: xAxisCategories,
+        splitArea: {
+          show: true,
+        },
+      },
+      yAxis: {
+        type: 'category',
+        data: yAxisCategories,
+        splitArea: {
+          show: true,
+        },
+      },
+      visualMap: {
+        min: -1,
+        max: 1,
+        calculable: true,
+        orient: 'horizontal',
+        left: 'center',
+        bottom: '15%',
+      },
+      series: [
+        {
+          name: 'Correlation',
+          type: 'heatmap',
+          data: value,
+          label: {
+            show: true,
+          },
+          emphasis: {
+            itemStyle: {
+              shadowBlur: 10,
+              shadowColor: 'rgba(0, 0, 0, 0.5)',
+            },
+          },
+        },
+      ],
+    };
+  }
+
   onMoreDetails() {
     this.showMoreDetailsLoader.update((value) => !value);
 
@@ -2482,6 +2558,7 @@ export class EdaComponent implements OnInit {
       this.datasetService.checkTransposeNum(this.datasetId()!),
       this.datasetService.checkTransposeCat(this.datasetId()!),
       this.datasetService.checkMissingData(this.datasetId()!),
+      this.datasetService.checkCorrelationValue(this.datasetId()!),
       this.datasetService.checkPairPlot(this.datasetId()!),
       this.datasetService.checkOutLayerValue(this.datasetId()!),
       this.datasetService.checkAllRatio(this.datasetId()!)
@@ -2490,6 +2567,7 @@ export class EdaComponent implements OnInit {
         { id: transposeNum_id, ...transposeNum },
         { id: transposeCat_id, ...transposeCat },
         { id: missingData_id, ...missingData },
+        { id: correlation_id, ...correlation },
         { id: pairPlot_id, ...pairPlot },
         { id: outLayerValue_id, ...outLayerValue },
         { id: allRatio_id, ...allRatio },
@@ -2499,13 +2577,10 @@ export class EdaComponent implements OnInit {
         this.showMoreDetailsLoader.update((value) => !value);
         this.activeTab = 1;
 
-        const outLayerDataOption = this.createOutLayerValueChart(outLayerValue);
-
-        console.log({ outLayerValue, outLayerDataOption });
-
         this.MissingData.set(this.createMissingDataChart(missingData));
+        this.correlationData.set(this.createCorrelationChart(correlation));
         this.PairPlotData.set(this.createPairPlotChart(pairPlot));
-        this.outLayerData.set(outLayerDataOption);
+        this.outLayerData.set(this.createOutLayerValueChart(outLayerValue));
         this.allRatio.set(allRatio);
       }, 2000);
 
