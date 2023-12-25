@@ -90,6 +90,15 @@ export class DatasetService {
     return this.http.get<any>(URL);
   }
 
+  public performEdaColumWise(dataset_id: number, column: string): Observable<any> {
+    const URL = this.urlGenerator.fetch('dataset', 'performEdaColumWise', [
+      { placeholder: '{dataset_id}', value: dataset_id },
+      { placeholder: '{column}', value: column },
+    ]);
+
+    return this.http.get<any>(URL);
+  }
+
   public create(fileName: string): Observable<any> {
     const URL = this.urlGenerator.fetch('dataset', 'create');
 

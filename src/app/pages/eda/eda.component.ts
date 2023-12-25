@@ -164,7 +164,7 @@ const TaigaImports = [
                 </div>
               </button>
               <button tuiStep [disabled]="activeTab <= 0">More Details</button>
-              <button tuiStep [disabled]="activeTab <= 1">Result</button>
+              <button tuiStep [disabled]="activeTab <= 0">Column wise</button>
             </tui-stepper>
           </div>
         </div>
@@ -1662,13 +1662,105 @@ const TaigaImports = [
           </div>
           }
         </tui-loader>
+        } @else if(activeTab == 2){
+        <div class="row justify-content-center py-2">
+          <div class="col-12">
+            <p
+              class="tui-text_body-xl text-center"
+              style="color: var(--tui-success-fill); font-weight: 600;"
+            >
+              Column Details
+            </p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-4">
+            <form>
+              <tui-select [formControl]="edaColumnController">
+                Column
+                <input tuiTextfield placeholder="Choose a column" />
+                <tui-data-list-wrapper
+                  *tuiDataList
+                  [items]="[
+                    'age',
+                    'bp',
+                    'sg',
+                    'al',
+                    'su',
+                    'rbc',
+                    'pc',
+                    'pcc',
+                    'ba',
+                    'bgr',
+                    'bu',
+                    'sc',
+                    'sob',
+                    'pot',
+                    'hemo',
+                    'pcv',
+                    'wc',
+                    'rc',
+                    'htn',
+                    'dm',
+                    'cad',
+                    'appet',
+                    'pe',
+                    'ane',
+                    'classification'
+                  ]"
+                ></tui-data-list-wrapper>
+              </tui-select>
+            </form>
+          </div>
+          <div class="col-1">
+            <button
+              tuiButton
+              appearance="secondary"
+              size="m"
+              class="m-1"
+              [disabled]="!edaColumnController.value"
+              (click)="onEdaColumnChange()"
+            >
+              Select
+            </button>
+          </div>
+        </div>
+        <tui-loader [showLoader]="showEdaColumnLoader" [overlay]="true">
+          <div class="row justify-content-center py-4">
+            <div class="col-4">
+              <tui-scrollbar>
+                <div style="max-height: 400px;">
+                  <table class="tui-table">
+                    <tbody>
+                      @for(item of edaColumnStates; track item.prop){
+                      <tr class="tui-table__tr tui-table__tr_border">
+                        <td class="tui-table__th tui-text_body-s">
+                          {{ item?.prop }}
+                        </td>
+                        <td class="tui-table__td tui-text_body-s">
+                          {{ item?.value }}
+                        </td>
+                      </tr>
+                      }
+                    </tbody>
+                  </table>
+                </div>
+              </tui-scrollbar>
+            </div>
+            <div class="col-8">
+              @if(edaColumnData){
+                <div echarts [options]="edaColumnData"></div>
+              }
+            </div>
+          </div>
+        </tui-loader>
         }
       </div>
     </div>
   </div>`,
   styleUrl: './eda.component.css',
   providers: [provideEcharts()],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  // changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EdaComponent implements OnInit {
   // Breadcrumb Values
@@ -1700,8 +1792,12 @@ export class EdaComponent implements OnInit {
   showOutLayerLoader = false;
   showAllRatioLoader = false;
 
+  showEdaColumnLoader = false;
+
   // Controller
   datasetController = new FormControl();
+  edaColumnController = new FormControl();
+
   // Dataset
   dataset = signal<Partial<DatasetsModel>>({});
   datasetId = computed(() => this.dataset().id);
@@ -1710,6 +1806,9 @@ export class EdaComponent implements OnInit {
   transposeNum = signal<Partial<DatasetTransposeNumericalModel>>({});
   transposeCat = signal<Partial<DatasetTransposeCategoricalModel>>({});
   allRatio = signal<any>({});
+
+  edaColumnWise: any;
+  edaColumnStates: any[] = [];
 
   // Dataset Dropdown
   datasetList = signal<DatasetsModel[]>([]);
@@ -1720,6 +1819,7 @@ export class EdaComponent implements OnInit {
   PairPlotData = signal<EChartsOption>({});
   outLayerData = signal<EChartsOption>({});
   correlationData = signal<EChartsOption>({});
+  edaColumnData: EChartsOption | undefined = undefined;
 
   constructor(
     @Inject(DatasetService)
@@ -2650,6 +2750,72 @@ export class EdaComponent implements OnInit {
 
       this.allRatio.set(allRatio);
       this.showAllRatioLoader = false;
+    });
+  }
+
+  onEdaColumnChange() {
+    const column = this.edaColumnController.value;
+    const id = this.datasetId() || 0;
+
+    this.showEdaColumnLoader = true;
+
+    this.datasetService.performEdaColumWise(id, column).subscribe((res) => {
+      setTimeout(() => {
+        this.showEdaColumnLoader = false;
+
+        this.edaColumnWise = res;
+        const type = res?.statistics?.type;
+
+        const data = [];
+        const states = res?.statistics;
+
+        if (states) {
+          delete states.type;
+          for (const prop in states) {
+            if (Object.prototype.hasOwnProperty.call(states, prop)) {
+              const value = states[prop];
+
+              data.push({ prop, value });
+            }
+          }
+        }
+
+        this.edaColumnStates = data;
+
+        if (type === 'num') {
+          this.edaColumnData = {
+            xAxis: {
+              type: 'category',
+              data: res?.histogram.map((el: any) => el.value),
+            },
+            yAxis: {
+              type: 'value',
+            },
+            series: [
+              {
+                data: res?.histogram.map((el: any) => el.count),
+                type: 'bar',
+              },
+            ],
+          };
+        } else if (type === 'cat') {
+          this.edaColumnData = {
+            xAxis: {
+              type: 'value',
+            },
+            yAxis: {
+              type: 'category',
+              data: res?.histogram.map((el: any) => el.value),
+            },
+            series: [
+              {
+                data: res?.histogram.map((el: any) => el.count),
+                type: 'bar',
+              },
+            ],
+          };
+        }
+      }, 3000);
     });
   }
 }
