@@ -19,6 +19,7 @@ import { HttpClientModule } from '@angular/common/http';
 import {
   TuiRootModule,
   TuiScrollbarModule,
+  TuiLoaderModule,
   TuiSvgModule,
   TuiButtonModule,
   TuiDropdownModule,
@@ -67,6 +68,7 @@ const TaigaImports = [
   // CORE
   TuiRootModule,
   TuiScrollbarModule,
+  TuiLoaderModule,
   TuiSvgModule,
   TuiButtonModule,
   TuiDropdownModule,
@@ -495,9 +497,11 @@ const TaigaImports = [
           </div>
         </div>
         <div class="row justify-content-center py-2">
-          <div class="col-12">
-            <div echarts [options]="MissingData()"></div>
-          </div>
+          <tui-loader [showLoader]="showMissingDataLoader" [overlay]="true">
+            <div class="col-12">
+              <div echarts [options]="MissingData()"></div>
+            </div>
+          </tui-loader>
         </div>
         <div class="row justify-content-center py-2">
           <div class="col-12">
@@ -510,9 +514,11 @@ const TaigaImports = [
           </div>
         </div>
         <div class="row justify-content-center py-2">
-          <div class="col-12">
-            <div echarts [options]="correlationData()"></div>
-          </div>
+          <tui-loader [showLoader]="showCorrelationLoader" [overlay]="true">
+            <div class="col-12">
+              <div echarts [options]="correlationData()"></div>
+            </div>
+          </tui-loader>
         </div>
         <div class="row justify-content-center py-2">
           <div class="col-12">
@@ -526,489 +532,493 @@ const TaigaImports = [
         </div>
         <div class="row justify-content-center py-2">
           <div class="col-11">
-            <tui-scrollbar>
-              <div style="height: 400px;">
-                <table class="tui-table">
-                  <tbody>
-                    <tr class="tui-table__tr tui-table__tr_border">
-                      <td class="tui-table__th tui-text_body-s">Columns</td>
-                      <td class="tui-table__th tui-text_body-s">25%</td>
-                      <td class="tui-table__th tui-text_body-s">50%</td>
-                      <td class="tui-table__th tui-text_body-s">75%</td>
-                      <td class="tui-table__th tui-text_body-s">Count</td>
-                      <td class="tui-table__th tui-text_body-s">Max</td>
-                      <td class="tui-table__th tui-text_body-s">Mean</td>
-                      <td class="tui-table__th tui-text_body-s">Min</td>
-                      <td class="tui-table__th tui-text_body-s">Missing</td>
-                      <td class="tui-table__th tui-text_body-s">Std</td>
-                      <td class="tui-table__th tui-text_body-s">Variance</td>
-                    </tr>
-                    <tr class="tui-table__tr tui-table__tr_border">
-                      <td class="tui-table__td tui-text_body-s">Age</td>
-                      <td class="tui-table__td tui-text_body-s">
-                        {{ transposeNum()['age']!['25%'] }}
-                      </td>
-                      <td class="tui-table__td tui-text_body-s">
-                        {{ transposeNum()['age']!['50%'] }}
-                      </td>
-                      <td class="tui-table__td tui-text_body-s">
-                        {{ transposeNum()['age']!['75%'] }}
-                      </td>
-                      <td class="tui-table__td tui-text_body-s">
-                        {{ transposeNum()['age']!['Count'] }}
-                      </td>
-                      <td class="tui-table__td tui-text_body-s">
-                        {{ transposeNum()['age']!['Max'] }}
-                      </td>
-                      <td class="tui-table__td tui-text_body-s">
-                        {{ transposeNum()['age']!['Mean'] }}
-                      </td>
-                      <td class="tui-table__td tui-text_body-s">
-                        {{ transposeNum()['age']!['Min'] }}
-                      </td>
-                      <td class="tui-table__td tui-text_body-s">
-                        {{ transposeNum()['age']!['Missing'] }}
-                      </td>
-                      <td class="tui-table__td tui-text_body-s">
-                        {{ transposeNum()['age']!['Std'] }}
-                      </td>
-                      <td class="tui-table__td tui-text_body-s">
-                        {{ transposeNum()['age']!['Variance'] }}
-                      </td>
-                    </tr>
-                    <tr class="tui-table__tr tui-table__tr_border">
-                      <td class="tui-table__td tui-text_body-s">Al</td>
-                      <td class="tui-table__td tui-text_body-s">
-                        {{ transposeNum()['al']!['25%'] }}
-                      </td>
-                      <td class="tui-table__td tui-text_body-s">
-                        {{ transposeNum()['al']!['50%'] }}
-                      </td>
-                      <td class="tui-table__td tui-text_body-s">
-                        {{ transposeNum()['al']!['75%'] }}
-                      </td>
-                      <td class="tui-table__td tui-text_body-s">
-                        {{ transposeNum()['al']!['Count'] }}
-                      </td>
-                      <td class="tui-table__td tui-text_body-s">
-                        {{ transposeNum()['al']!['Max'] }}
-                      </td>
-                      <td class="tui-table__td tui-text_body-s">
-                        {{ transposeNum()['al']!['Mean'] }}
-                      </td>
-                      <td class="tui-table__td tui-text_body-s">
-                        {{ transposeNum()['al']!['Min'] }}
-                      </td>
-                      <td class="tui-table__td tui-text_body-s">
-                        {{ transposeNum()['al']!['Missing'] }}
-                      </td>
-                      <td class="tui-table__td tui-text_body-s">
-                        {{ transposeNum()['al']!['Std'] }}
-                      </td>
-                      <td class="tui-table__td tui-text_body-s">
-                        {{ transposeNum()['al']!['Variance'] }}
-                      </td>
-                    </tr>
-                    <tr class="tui-table__tr tui-table__tr_border">
-                      <td class="tui-table__td tui-text_body-s">Bgr</td>
-                      <td class="tui-table__td tui-text_body-s">
-                        {{ transposeNum()['bgr']!['25%'] }}
-                      </td>
-                      <td class="tui-table__td tui-text_body-s">
-                        {{ transposeNum()['bgr']!['50%'] }}
-                      </td>
-                      <td class="tui-table__td tui-text_body-s">
-                        {{ transposeNum()['bgr']!['75%'] }}
-                      </td>
-                      <td class="tui-table__td tui-text_body-s">
-                        {{ transposeNum()['bgr']!['Count'] }}
-                      </td>
-                      <td class="tui-table__td tui-text_body-s">
-                        {{ transposeNum()['bgr']!['Max'] }}
-                      </td>
-                      <td class="tui-table__td tui-text_body-s">
-                        {{ transposeNum()['bgr']!['Mean'] }}
-                      </td>
-                      <td class="tui-table__td tui-text_body-s">
-                        {{ transposeNum()['bgr']!['Min'] }}
-                      </td>
-                      <td class="tui-table__td tui-text_body-s">
-                        {{ transposeNum()['bgr']!['Missing'] }}
-                      </td>
-                      <td class="tui-table__td tui-text_body-s">
-                        {{ transposeNum()['bgr']!['Std'] }}
-                      </td>
-                      <td class="tui-table__td tui-text_body-s">
-                        {{ transposeNum()['bgr']!['Variance'] }}
-                      </td>
-                    </tr>
-                    <tr class="tui-table__tr tui-table__tr_border">
-                      <td class="tui-table__td tui-text_body-s">Bp</td>
-                      <td class="tui-table__td tui-text_body-s">
-                        {{ transposeNum()['bp']!['25%'] }}
-                      </td>
-                      <td class="tui-table__td tui-text_body-s">
-                        {{ transposeNum()['bp']!['50%'] }}
-                      </td>
-                      <td class="tui-table__td tui-text_body-s">
-                        {{ transposeNum()['bp']!['75%'] }}
-                      </td>
-                      <td class="tui-table__td tui-text_body-s">
-                        {{ transposeNum()['bp']!['Count'] }}
-                      </td>
-                      <td class="tui-table__td tui-text_body-s">
-                        {{ transposeNum()['bp']!['Max'] }}
-                      </td>
-                      <td class="tui-table__td tui-text_body-s">
-                        {{ transposeNum()['bp']!['Mean'] }}
-                      </td>
-                      <td class="tui-table__td tui-text_body-s">
-                        {{ transposeNum()['bp']!['Min'] }}
-                      </td>
-                      <td class="tui-table__td tui-text_body-s">
-                        {{ transposeNum()['bp']!['Missing'] }}
-                      </td>
-                      <td class="tui-table__td tui-text_body-s">
-                        {{ transposeNum()['bp']!['Std'] }}
-                      </td>
-                      <td class="tui-table__td tui-text_body-s">
-                        {{ transposeNum()['bp']!['Variance'] }}
-                      </td>
-                    </tr>
-                    <tr class="tui-table__tr tui-table__tr_border">
-                      <td class="tui-table__td tui-text_body-s">Bu</td>
-                      <td class="tui-table__td tui-text_body-s">
-                        {{ transposeNum()['bu']!['25%'] }}
-                      </td>
-                      <td class="tui-table__td tui-text_body-s">
-                        {{ transposeNum()['bu']!['50%'] }}
-                      </td>
-                      <td class="tui-table__td tui-text_body-s">
-                        {{ transposeNum()['bu']!['75%'] }}
-                      </td>
-                      <td class="tui-table__td tui-text_body-s">
-                        {{ transposeNum()['bu']!['Count'] }}
-                      </td>
-                      <td class="tui-table__td tui-text_body-s">
-                        {{ transposeNum()['bu']!['Max'] }}
-                      </td>
-                      <td class="tui-table__td tui-text_body-s">
-                        {{ transposeNum()['bu']!['Mean'] }}
-                      </td>
-                      <td class="tui-table__td tui-text_body-s">
-                        {{ transposeNum()['bu']!['Min'] }}
-                      </td>
-                      <td class="tui-table__td tui-text_body-s">
-                        {{ transposeNum()['bu']!['Missing'] }}
-                      </td>
-                      <td class="tui-table__td tui-text_body-s">
-                        {{ transposeNum()['bu']!['Std'] }}
-                      </td>
-                      <td class="tui-table__td tui-text_body-s">
-                        {{ transposeNum()['bu']!['Variance'] }}
-                      </td>
-                    </tr>
-                    <tr class="tui-table__tr tui-table__tr_border">
-                      <td class="tui-table__td tui-text_body-s">Hemo</td>
-                      <td class="tui-table__td tui-text_body-s">
-                        {{ transposeNum()['hemo']!['25%'] }}
-                      </td>
-                      <td class="tui-table__td tui-text_body-s">
-                        {{ transposeNum()['hemo']!['50%'] }}
-                      </td>
-                      <td class="tui-table__td tui-text_body-s">
-                        {{ transposeNum()['hemo']!['75%'] }}
-                      </td>
-                      <td class="tui-table__td tui-text_body-s">
-                        {{ transposeNum()['hemo']!['Count'] }}
-                      </td>
-                      <td class="tui-table__td tui-text_body-s">
-                        {{ transposeNum()['hemo']!['Max'] }}
-                      </td>
-                      <td class="tui-table__td tui-text_body-s">
-                        {{ transposeNum()['hemo']!['Mean'] }}
-                      </td>
-                      <td class="tui-table__td tui-text_body-s">
-                        {{ transposeNum()['hemo']!['Min'] }}
-                      </td>
-                      <td class="tui-table__td tui-text_body-s">
-                        {{ transposeNum()['hemo']!['Missing'] }}
-                      </td>
-                      <td class="tui-table__td tui-text_body-s">
-                        {{ transposeNum()['hemo']!['Std'] }}
-                      </td>
-                      <td class="tui-table__td tui-text_body-s">
-                        {{ transposeNum()['hemo']!['Variance'] }}
-                      </td>
-                    </tr>
-                    <tr class="tui-table__tr tui-table__tr_border">
-                      <td class="tui-table__td tui-text_body-s">Pcv</td>
-                      <td class="tui-table__td tui-text_body-s">
-                        {{ transposeNum()['pcv']!['25%'] }}
-                      </td>
-                      <td class="tui-table__td tui-text_body-s">
-                        {{ transposeNum()['pcv']!['50%'] }}
-                      </td>
-                      <td class="tui-table__td tui-text_body-s">
-                        {{ transposeNum()['pcv']!['75%'] }}
-                      </td>
-                      <td class="tui-table__td tui-text_body-s">
-                        {{ transposeNum()['pcv']!['Count'] }}
-                      </td>
-                      <td class="tui-table__td tui-text_body-s">
-                        {{ transposeNum()['pcv']!['Max'] }}
-                      </td>
-                      <td class="tui-table__td tui-text_body-s">
-                        {{ transposeNum()['pcv']!['Mean'] }}
-                      </td>
-                      <td class="tui-table__td tui-text_body-s">
-                        {{ transposeNum()['pcv']!['Min'] }}
-                      </td>
-                      <td class="tui-table__td tui-text_body-s">
-                        {{ transposeNum()['pcv']!['Missing'] }}
-                      </td>
-                      <td class="tui-table__td tui-text_body-s">
-                        {{ transposeNum()['pcv']!['Std'] }}
-                      </td>
-                      <td class="tui-table__td tui-text_body-s">
-                        {{ transposeNum()['pcv']!['Variance'] }}
-                      </td>
-                    </tr>
-                    <tr class="tui-table__tr tui-table__tr_border">
-                      <td class="tui-table__td tui-text_body-s">Pot</td>
-                      <td class="tui-table__td tui-text_body-s">
-                        {{ transposeNum()['pot']!['25%'] }}
-                      </td>
-                      <td class="tui-table__td tui-text_body-s">
-                        {{ transposeNum()['pot']!['50%'] }}
-                      </td>
-                      <td class="tui-table__td tui-text_body-s">
-                        {{ transposeNum()['pot']!['75%'] }}
-                      </td>
-                      <td class="tui-table__td tui-text_body-s">
-                        {{ transposeNum()['pot']!['Count'] }}
-                      </td>
-                      <td class="tui-table__td tui-text_body-s">
-                        {{ transposeNum()['pot']!['Max'] }}
-                      </td>
-                      <td class="tui-table__td tui-text_body-s">
-                        {{ transposeNum()['pot']!['Mean'] }}
-                      </td>
-                      <td class="tui-table__td tui-text_body-s">
-                        {{ transposeNum()['pot']!['Min'] }}
-                      </td>
-                      <td class="tui-table__td tui-text_body-s">
-                        {{ transposeNum()['pot']!['Missing'] }}
-                      </td>
-                      <td class="tui-table__td tui-text_body-s">
-                        {{ transposeNum()['pot']!['Std'] }}
-                      </td>
-                      <td class="tui-table__td tui-text_body-s">
-                        {{ transposeNum()['pot']!['Variance'] }}
-                      </td>
-                    </tr>
-                    <tr class="tui-table__tr tui-table__tr_border">
-                      <td class="tui-table__td tui-text_body-s">Rc</td>
-                      <td class="tui-table__td tui-text_body-s">
-                        {{ transposeNum()['rc']!['25%'] }}
-                      </td>
-                      <td class="tui-table__td tui-text_body-s">
-                        {{ transposeNum()['rc']!['50%'] }}
-                      </td>
-                      <td class="tui-table__td tui-text_body-s">
-                        {{ transposeNum()['rc']!['75%'] }}
-                      </td>
-                      <td class="tui-table__td tui-text_body-s">
-                        {{ transposeNum()['rc']!['Count'] }}
-                      </td>
-                      <td class="tui-table__td tui-text_body-s">
-                        {{ transposeNum()['rc']!['Max'] }}
-                      </td>
-                      <td class="tui-table__td tui-text_body-s">
-                        {{ transposeNum()['rc']!['Mean'] }}
-                      </td>
-                      <td class="tui-table__td tui-text_body-s">
-                        {{ transposeNum()['rc']!['Min'] }}
-                      </td>
-                      <td class="tui-table__td tui-text_body-s">
-                        {{ transposeNum()['rc']!['Missing'] }}
-                      </td>
-                      <td class="tui-table__td tui-text_body-s">
-                        {{ transposeNum()['rc']!['Std'] }}
-                      </td>
-                      <td class="tui-table__td tui-text_body-s">
-                        {{ transposeNum()['rc']!['Variance'] }}
-                      </td>
-                    </tr>
-                    <tr class="tui-table__tr tui-table__tr_border">
-                      <td class="tui-table__td tui-text_body-s">Sc</td>
-                      <td class="tui-table__td tui-text_body-s">
-                        {{ transposeNum()['sc']!['25%'] }}
-                      </td>
-                      <td class="tui-table__td tui-text_body-s">
-                        {{ transposeNum()['sc']!['50%'] }}
-                      </td>
-                      <td class="tui-table__td tui-text_body-s">
-                        {{ transposeNum()['sc']!['75%'] }}
-                      </td>
-                      <td class="tui-table__td tui-text_body-s">
-                        {{ transposeNum()['sc']!['Count'] }}
-                      </td>
-                      <td class="tui-table__td tui-text_body-s">
-                        {{ transposeNum()['sc']!['Max'] }}
-                      </td>
-                      <td class="tui-table__td tui-text_body-s">
-                        {{ transposeNum()['sc']!['Mean'] }}
-                      </td>
-                      <td class="tui-table__td tui-text_body-s">
-                        {{ transposeNum()['sc']!['Min'] }}
-                      </td>
-                      <td class="tui-table__td tui-text_body-s">
-                        {{ transposeNum()['sc']!['Missing'] }}
-                      </td>
-                      <td class="tui-table__td tui-text_body-s">
-                        {{ transposeNum()['sc']!['Std'] }}
-                      </td>
-                      <td class="tui-table__td tui-text_body-s">
-                        {{ transposeNum()['sc']!['Variance'] }}
-                      </td>
-                    </tr>
-                    <tr class="tui-table__tr tui-table__tr_border">
-                      <td class="tui-table__td tui-text_body-s">Sg</td>
-                      <td class="tui-table__td tui-text_body-s">
-                        {{ transposeNum()['sg']!['25%'] }}
-                      </td>
-                      <td class="tui-table__td tui-text_body-s">
-                        {{ transposeNum()['sg']!['50%'] }}
-                      </td>
-                      <td class="tui-table__td tui-text_body-s">
-                        {{ transposeNum()['sg']!['75%'] }}
-                      </td>
-                      <td class="tui-table__td tui-text_body-s">
-                        {{ transposeNum()['sg']!['Count'] }}
-                      </td>
-                      <td class="tui-table__td tui-text_body-s">
-                        {{ transposeNum()['sg']!['Max'] }}
-                      </td>
-                      <td class="tui-table__td tui-text_body-s">
-                        {{ transposeNum()['sg']!['Mean'] }}
-                      </td>
-                      <td class="tui-table__td tui-text_body-s">
-                        {{ transposeNum()['sg']!['Min'] }}
-                      </td>
-                      <td class="tui-table__td tui-text_body-s">
-                        {{ transposeNum()['sg']!['Missing'] }}
-                      </td>
-                      <td class="tui-table__td tui-text_body-s">
-                        {{ transposeNum()['sg']!['Std'] }}
-                      </td>
-                      <td class="tui-table__td tui-text_body-s">
-                        {{ transposeNum()['sg']!['Variance'] }}
-                      </td>
-                    </tr>
-                    <tr class="tui-table__tr tui-table__tr_border">
-                      <td class="tui-table__td tui-text_body-s">Sod</td>
-                      <td class="tui-table__td tui-text_body-s">
-                        {{ transposeNum()['sod']!['25%'] }}
-                      </td>
-                      <td class="tui-table__td tui-text_body-s">
-                        {{ transposeNum()['sod']!['50%'] }}
-                      </td>
-                      <td class="tui-table__td tui-text_body-s">
-                        {{ transposeNum()['sod']!['75%'] }}
-                      </td>
-                      <td class="tui-table__td tui-text_body-s">
-                        {{ transposeNum()['sod']!['Count'] }}
-                      </td>
-                      <td class="tui-table__td tui-text_body-s">
-                        {{ transposeNum()['sod']!['Max'] }}
-                      </td>
-                      <td class="tui-table__td tui-text_body-s">
-                        {{ transposeNum()['sod']!['Mean'] }}
-                      </td>
-                      <td class="tui-table__td tui-text_body-s">
-                        {{ transposeNum()['sod']!['Min'] }}
-                      </td>
-                      <td class="tui-table__td tui-text_body-s">
-                        {{ transposeNum()['sod']!['Missing'] }}
-                      </td>
-                      <td class="tui-table__td tui-text_body-s">
-                        {{ transposeNum()['sod']!['Std'] }}
-                      </td>
-                      <td class="tui-table__td tui-text_body-s">
-                        {{ transposeNum()['sod']!['Variance'] }}
-                      </td>
-                    </tr>
-                    <tr class="tui-table__tr tui-table__tr_border">
-                      <td class="tui-table__td tui-text_body-s">Su</td>
-                      <td class="tui-table__td tui-text_body-s">
-                        {{ transposeNum()['su']!['25%'] }}
-                      </td>
-                      <td class="tui-table__td tui-text_body-s">
-                        {{ transposeNum()['su']!['50%'] }}
-                      </td>
-                      <td class="tui-table__td tui-text_body-s">
-                        {{ transposeNum()['su']!['75%'] }}
-                      </td>
-                      <td class="tui-table__td tui-text_body-s">
-                        {{ transposeNum()['su']!['Count'] }}
-                      </td>
-                      <td class="tui-table__td tui-text_body-s">
-                        {{ transposeNum()['su']!['Max'] }}
-                      </td>
-                      <td class="tui-table__td tui-text_body-s">
-                        {{ transposeNum()['su']!['Mean'] }}
-                      </td>
-                      <td class="tui-table__td tui-text_body-s">
-                        {{ transposeNum()['su']!['Min'] }}
-                      </td>
-                      <td class="tui-table__td tui-text_body-s">
-                        {{ transposeNum()['su']!['Missing'] }}
-                      </td>
-                      <td class="tui-table__td tui-text_body-s">
-                        {{ transposeNum()['su']!['Std'] }}
-                      </td>
-                      <td class="tui-table__td tui-text_body-s">
-                        {{ transposeNum()['su']!['Variance'] }}
-                      </td>
-                    </tr>
-                    <tr class="tui-table__tr tui-table__tr_border">
-                      <td class="tui-table__td tui-text_body-s">Wc</td>
-                      <td class="tui-table__td tui-text_body-s">
-                        {{ transposeNum()['wc']!['25%'] }}
-                      </td>
-                      <td class="tui-table__td tui-text_body-s">
-                        {{ transposeNum()['wc']!['50%'] }}
-                      </td>
-                      <td class="tui-table__td tui-text_body-s">
-                        {{ transposeNum()['wc']!['75%'] }}
-                      </td>
-                      <td class="tui-table__td tui-text_body-s">
-                        {{ transposeNum()['wc']!['Count'] }}
-                      </td>
-                      <td class="tui-table__td tui-text_body-s">
-                        {{ transposeNum()['wc']!['Max'] }}
-                      </td>
-                      <td class="tui-table__td tui-text_body-s">
-                        {{ transposeNum()['wc']!['Mean'] }}
-                      </td>
-                      <td class="tui-table__td tui-text_body-s">
-                        {{ transposeNum()['wc']!['Min'] }}
-                      </td>
-                      <td class="tui-table__td tui-text_body-s">
-                        {{ transposeNum()['wc']!['Missing'] }}
-                      </td>
-                      <td class="tui-table__td tui-text_body-s">
-                        {{ transposeNum()['wc']!['Std'] }}
-                      </td>
-                      <td class="tui-table__td tui-text_body-s">
-                        {{ transposeNum()['wc']!['Variance'] }}
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </tui-scrollbar>
+            <tui-loader [showLoader]="showTransposeNumLoader" [overlay]="true">
+              @if(!showTransposeNumLoader){
+              <tui-scrollbar>
+                <div style="height: 400px;">
+                  <table class="tui-table">
+                    <tbody>
+                      <tr class="tui-table__tr tui-table__tr_border">
+                        <td class="tui-table__th tui-text_body-s">Columns</td>
+                        <td class="tui-table__th tui-text_body-s">25%</td>
+                        <td class="tui-table__th tui-text_body-s">50%</td>
+                        <td class="tui-table__th tui-text_body-s">75%</td>
+                        <td class="tui-table__th tui-text_body-s">Count</td>
+                        <td class="tui-table__th tui-text_body-s">Max</td>
+                        <td class="tui-table__th tui-text_body-s">Mean</td>
+                        <td class="tui-table__th tui-text_body-s">Min</td>
+                        <td class="tui-table__th tui-text_body-s">Missing</td>
+                        <td class="tui-table__th tui-text_body-s">Std</td>
+                        <td class="tui-table__th tui-text_body-s">Variance</td>
+                      </tr>
+                      <tr class="tui-table__tr tui-table__tr_border">
+                        <td class="tui-table__td tui-text_body-s">Age</td>
+                        <td class="tui-table__td tui-text_body-s">
+                          {{ transposeNum()['age']!['25%'] }}
+                        </td>
+                        <td class="tui-table__td tui-text_body-s">
+                          {{ transposeNum()['age']!['50%'] }}
+                        </td>
+                        <td class="tui-table__td tui-text_body-s">
+                          {{ transposeNum()['age']!['75%'] }}
+                        </td>
+                        <td class="tui-table__td tui-text_body-s">
+                          {{ transposeNum()['age']!['Count'] }}
+                        </td>
+                        <td class="tui-table__td tui-text_body-s">
+                          {{ transposeNum()['age']!['Max'] }}
+                        </td>
+                        <td class="tui-table__td tui-text_body-s">
+                          {{ transposeNum()['age']!['Mean'] }}
+                        </td>
+                        <td class="tui-table__td tui-text_body-s">
+                          {{ transposeNum()['age']!['Min'] }}
+                        </td>
+                        <td class="tui-table__td tui-text_body-s">
+                          {{ transposeNum()['age']!['Missing'] }}
+                        </td>
+                        <td class="tui-table__td tui-text_body-s">
+                          {{ transposeNum()['age']!['Std'] }}
+                        </td>
+                        <td class="tui-table__td tui-text_body-s">
+                          {{ transposeNum()['age']!['Variance'] }}
+                        </td>
+                      </tr>
+                      <tr class="tui-table__tr tui-table__tr_border">
+                        <td class="tui-table__td tui-text_body-s">Al</td>
+                        <td class="tui-table__td tui-text_body-s">
+                          {{ transposeNum()['al']!['25%'] }}
+                        </td>
+                        <td class="tui-table__td tui-text_body-s">
+                          {{ transposeNum()['al']!['50%'] }}
+                        </td>
+                        <td class="tui-table__td tui-text_body-s">
+                          {{ transposeNum()['al']!['75%'] }}
+                        </td>
+                        <td class="tui-table__td tui-text_body-s">
+                          {{ transposeNum()['al']!['Count'] }}
+                        </td>
+                        <td class="tui-table__td tui-text_body-s">
+                          {{ transposeNum()['al']!['Max'] }}
+                        </td>
+                        <td class="tui-table__td tui-text_body-s">
+                          {{ transposeNum()['al']!['Mean'] }}
+                        </td>
+                        <td class="tui-table__td tui-text_body-s">
+                          {{ transposeNum()['al']!['Min'] }}
+                        </td>
+                        <td class="tui-table__td tui-text_body-s">
+                          {{ transposeNum()['al']!['Missing'] }}
+                        </td>
+                        <td class="tui-table__td tui-text_body-s">
+                          {{ transposeNum()['al']!['Std'] }}
+                        </td>
+                        <td class="tui-table__td tui-text_body-s">
+                          {{ transposeNum()['al']!['Variance'] }}
+                        </td>
+                      </tr>
+                      <tr class="tui-table__tr tui-table__tr_border">
+                        <td class="tui-table__td tui-text_body-s">Bgr</td>
+                        <td class="tui-table__td tui-text_body-s">
+                          {{ transposeNum()['bgr']!['25%'] }}
+                        </td>
+                        <td class="tui-table__td tui-text_body-s">
+                          {{ transposeNum()['bgr']!['50%'] }}
+                        </td>
+                        <td class="tui-table__td tui-text_body-s">
+                          {{ transposeNum()['bgr']!['75%'] }}
+                        </td>
+                        <td class="tui-table__td tui-text_body-s">
+                          {{ transposeNum()['bgr']!['Count'] }}
+                        </td>
+                        <td class="tui-table__td tui-text_body-s">
+                          {{ transposeNum()['bgr']!['Max'] }}
+                        </td>
+                        <td class="tui-table__td tui-text_body-s">
+                          {{ transposeNum()['bgr']!['Mean'] }}
+                        </td>
+                        <td class="tui-table__td tui-text_body-s">
+                          {{ transposeNum()['bgr']!['Min'] }}
+                        </td>
+                        <td class="tui-table__td tui-text_body-s">
+                          {{ transposeNum()['bgr']!['Missing'] }}
+                        </td>
+                        <td class="tui-table__td tui-text_body-s">
+                          {{ transposeNum()['bgr']!['Std'] }}
+                        </td>
+                        <td class="tui-table__td tui-text_body-s">
+                          {{ transposeNum()['bgr']!['Variance'] }}
+                        </td>
+                      </tr>
+                      <tr class="tui-table__tr tui-table__tr_border">
+                        <td class="tui-table__td tui-text_body-s">Bp</td>
+                        <td class="tui-table__td tui-text_body-s">
+                          {{ transposeNum()['bp']!['25%'] }}
+                        </td>
+                        <td class="tui-table__td tui-text_body-s">
+                          {{ transposeNum()['bp']!['50%'] }}
+                        </td>
+                        <td class="tui-table__td tui-text_body-s">
+                          {{ transposeNum()['bp']!['75%'] }}
+                        </td>
+                        <td class="tui-table__td tui-text_body-s">
+                          {{ transposeNum()['bp']!['Count'] }}
+                        </td>
+                        <td class="tui-table__td tui-text_body-s">
+                          {{ transposeNum()['bp']!['Max'] }}
+                        </td>
+                        <td class="tui-table__td tui-text_body-s">
+                          {{ transposeNum()['bp']!['Mean'] }}
+                        </td>
+                        <td class="tui-table__td tui-text_body-s">
+                          {{ transposeNum()['bp']!['Min'] }}
+                        </td>
+                        <td class="tui-table__td tui-text_body-s">
+                          {{ transposeNum()['bp']!['Missing'] }}
+                        </td>
+                        <td class="tui-table__td tui-text_body-s">
+                          {{ transposeNum()['bp']!['Std'] }}
+                        </td>
+                        <td class="tui-table__td tui-text_body-s">
+                          {{ transposeNum()['bp']!['Variance'] }}
+                        </td>
+                      </tr>
+                      <tr class="tui-table__tr tui-table__tr_border">
+                        <td class="tui-table__td tui-text_body-s">Bu</td>
+                        <td class="tui-table__td tui-text_body-s">
+                          {{ transposeNum()['bu']!['25%'] }}
+                        </td>
+                        <td class="tui-table__td tui-text_body-s">
+                          {{ transposeNum()['bu']!['50%'] }}
+                        </td>
+                        <td class="tui-table__td tui-text_body-s">
+                          {{ transposeNum()['bu']!['75%'] }}
+                        </td>
+                        <td class="tui-table__td tui-text_body-s">
+                          {{ transposeNum()['bu']!['Count'] }}
+                        </td>
+                        <td class="tui-table__td tui-text_body-s">
+                          {{ transposeNum()['bu']!['Max'] }}
+                        </td>
+                        <td class="tui-table__td tui-text_body-s">
+                          {{ transposeNum()['bu']!['Mean'] }}
+                        </td>
+                        <td class="tui-table__td tui-text_body-s">
+                          {{ transposeNum()['bu']!['Min'] }}
+                        </td>
+                        <td class="tui-table__td tui-text_body-s">
+                          {{ transposeNum()['bu']!['Missing'] }}
+                        </td>
+                        <td class="tui-table__td tui-text_body-s">
+                          {{ transposeNum()['bu']!['Std'] }}
+                        </td>
+                        <td class="tui-table__td tui-text_body-s">
+                          {{ transposeNum()['bu']!['Variance'] }}
+                        </td>
+                      </tr>
+                      <tr class="tui-table__tr tui-table__tr_border">
+                        <td class="tui-table__td tui-text_body-s">Hemo</td>
+                        <td class="tui-table__td tui-text_body-s">
+                          {{ transposeNum()['hemo']!['25%'] }}
+                        </td>
+                        <td class="tui-table__td tui-text_body-s">
+                          {{ transposeNum()['hemo']!['50%'] }}
+                        </td>
+                        <td class="tui-table__td tui-text_body-s">
+                          {{ transposeNum()['hemo']!['75%'] }}
+                        </td>
+                        <td class="tui-table__td tui-text_body-s">
+                          {{ transposeNum()['hemo']!['Count'] }}
+                        </td>
+                        <td class="tui-table__td tui-text_body-s">
+                          {{ transposeNum()['hemo']!['Max'] }}
+                        </td>
+                        <td class="tui-table__td tui-text_body-s">
+                          {{ transposeNum()['hemo']!['Mean'] }}
+                        </td>
+                        <td class="tui-table__td tui-text_body-s">
+                          {{ transposeNum()['hemo']!['Min'] }}
+                        </td>
+                        <td class="tui-table__td tui-text_body-s">
+                          {{ transposeNum()['hemo']!['Missing'] }}
+                        </td>
+                        <td class="tui-table__td tui-text_body-s">
+                          {{ transposeNum()['hemo']!['Std'] }}
+                        </td>
+                        <td class="tui-table__td tui-text_body-s">
+                          {{ transposeNum()['hemo']!['Variance'] }}
+                        </td>
+                      </tr>
+                      <tr class="tui-table__tr tui-table__tr_border">
+                        <td class="tui-table__td tui-text_body-s">Pcv</td>
+                        <td class="tui-table__td tui-text_body-s">
+                          {{ transposeNum()['pcv']!['25%'] }}
+                        </td>
+                        <td class="tui-table__td tui-text_body-s">
+                          {{ transposeNum()['pcv']!['50%'] }}
+                        </td>
+                        <td class="tui-table__td tui-text_body-s">
+                          {{ transposeNum()['pcv']!['75%'] }}
+                        </td>
+                        <td class="tui-table__td tui-text_body-s">
+                          {{ transposeNum()['pcv']!['Count'] }}
+                        </td>
+                        <td class="tui-table__td tui-text_body-s">
+                          {{ transposeNum()['pcv']!['Max'] }}
+                        </td>
+                        <td class="tui-table__td tui-text_body-s">
+                          {{ transposeNum()['pcv']!['Mean'] }}
+                        </td>
+                        <td class="tui-table__td tui-text_body-s">
+                          {{ transposeNum()['pcv']!['Min'] }}
+                        </td>
+                        <td class="tui-table__td tui-text_body-s">
+                          {{ transposeNum()['pcv']!['Missing'] }}
+                        </td>
+                        <td class="tui-table__td tui-text_body-s">
+                          {{ transposeNum()['pcv']!['Std'] }}
+                        </td>
+                        <td class="tui-table__td tui-text_body-s">
+                          {{ transposeNum()['pcv']!['Variance'] }}
+                        </td>
+                      </tr>
+                      <tr class="tui-table__tr tui-table__tr_border">
+                        <td class="tui-table__td tui-text_body-s">Pot</td>
+                        <td class="tui-table__td tui-text_body-s">
+                          {{ transposeNum()['pot']!['25%'] }}
+                        </td>
+                        <td class="tui-table__td tui-text_body-s">
+                          {{ transposeNum()['pot']!['50%'] }}
+                        </td>
+                        <td class="tui-table__td tui-text_body-s">
+                          {{ transposeNum()['pot']!['75%'] }}
+                        </td>
+                        <td class="tui-table__td tui-text_body-s">
+                          {{ transposeNum()['pot']!['Count'] }}
+                        </td>
+                        <td class="tui-table__td tui-text_body-s">
+                          {{ transposeNum()['pot']!['Max'] }}
+                        </td>
+                        <td class="tui-table__td tui-text_body-s">
+                          {{ transposeNum()['pot']!['Mean'] }}
+                        </td>
+                        <td class="tui-table__td tui-text_body-s">
+                          {{ transposeNum()['pot']!['Min'] }}
+                        </td>
+                        <td class="tui-table__td tui-text_body-s">
+                          {{ transposeNum()['pot']!['Missing'] }}
+                        </td>
+                        <td class="tui-table__td tui-text_body-s">
+                          {{ transposeNum()['pot']!['Std'] }}
+                        </td>
+                        <td class="tui-table__td tui-text_body-s">
+                          {{ transposeNum()['pot']!['Variance'] }}
+                        </td>
+                      </tr>
+                      <tr class="tui-table__tr tui-table__tr_border">
+                        <td class="tui-table__td tui-text_body-s">Rc</td>
+                        <td class="tui-table__td tui-text_body-s">
+                          {{ transposeNum()['rc']!['25%'] }}
+                        </td>
+                        <td class="tui-table__td tui-text_body-s">
+                          {{ transposeNum()['rc']!['50%'] }}
+                        </td>
+                        <td class="tui-table__td tui-text_body-s">
+                          {{ transposeNum()['rc']!['75%'] }}
+                        </td>
+                        <td class="tui-table__td tui-text_body-s">
+                          {{ transposeNum()['rc']!['Count'] }}
+                        </td>
+                        <td class="tui-table__td tui-text_body-s">
+                          {{ transposeNum()['rc']!['Max'] }}
+                        </td>
+                        <td class="tui-table__td tui-text_body-s">
+                          {{ transposeNum()['rc']!['Mean'] }}
+                        </td>
+                        <td class="tui-table__td tui-text_body-s">
+                          {{ transposeNum()['rc']!['Min'] }}
+                        </td>
+                        <td class="tui-table__td tui-text_body-s">
+                          {{ transposeNum()['rc']!['Missing'] }}
+                        </td>
+                        <td class="tui-table__td tui-text_body-s">
+                          {{ transposeNum()['rc']!['Std'] }}
+                        </td>
+                        <td class="tui-table__td tui-text_body-s">
+                          {{ transposeNum()['rc']!['Variance'] }}
+                        </td>
+                      </tr>
+                      <tr class="tui-table__tr tui-table__tr_border">
+                        <td class="tui-table__td tui-text_body-s">Sc</td>
+                        <td class="tui-table__td tui-text_body-s">
+                          {{ transposeNum()['sc']!['25%'] }}
+                        </td>
+                        <td class="tui-table__td tui-text_body-s">
+                          {{ transposeNum()['sc']!['50%'] }}
+                        </td>
+                        <td class="tui-table__td tui-text_body-s">
+                          {{ transposeNum()['sc']!['75%'] }}
+                        </td>
+                        <td class="tui-table__td tui-text_body-s">
+                          {{ transposeNum()['sc']!['Count'] }}
+                        </td>
+                        <td class="tui-table__td tui-text_body-s">
+                          {{ transposeNum()['sc']!['Max'] }}
+                        </td>
+                        <td class="tui-table__td tui-text_body-s">
+                          {{ transposeNum()['sc']!['Mean'] }}
+                        </td>
+                        <td class="tui-table__td tui-text_body-s">
+                          {{ transposeNum()['sc']!['Min'] }}
+                        </td>
+                        <td class="tui-table__td tui-text_body-s">
+                          {{ transposeNum()['sc']!['Missing'] }}
+                        </td>
+                        <td class="tui-table__td tui-text_body-s">
+                          {{ transposeNum()['sc']!['Std'] }}
+                        </td>
+                        <td class="tui-table__td tui-text_body-s">
+                          {{ transposeNum()['sc']!['Variance'] }}
+                        </td>
+                      </tr>
+                      <tr class="tui-table__tr tui-table__tr_border">
+                        <td class="tui-table__td tui-text_body-s">Sg</td>
+                        <td class="tui-table__td tui-text_body-s">
+                          {{ transposeNum()['sg']!['25%'] }}
+                        </td>
+                        <td class="tui-table__td tui-text_body-s">
+                          {{ transposeNum()['sg']!['50%'] }}
+                        </td>
+                        <td class="tui-table__td tui-text_body-s">
+                          {{ transposeNum()['sg']!['75%'] }}
+                        </td>
+                        <td class="tui-table__td tui-text_body-s">
+                          {{ transposeNum()['sg']!['Count'] }}
+                        </td>
+                        <td class="tui-table__td tui-text_body-s">
+                          {{ transposeNum()['sg']!['Max'] }}
+                        </td>
+                        <td class="tui-table__td tui-text_body-s">
+                          {{ transposeNum()['sg']!['Mean'] }}
+                        </td>
+                        <td class="tui-table__td tui-text_body-s">
+                          {{ transposeNum()['sg']!['Min'] }}
+                        </td>
+                        <td class="tui-table__td tui-text_body-s">
+                          {{ transposeNum()['sg']!['Missing'] }}
+                        </td>
+                        <td class="tui-table__td tui-text_body-s">
+                          {{ transposeNum()['sg']!['Std'] }}
+                        </td>
+                        <td class="tui-table__td tui-text_body-s">
+                          {{ transposeNum()['sg']!['Variance'] }}
+                        </td>
+                      </tr>
+                      <tr class="tui-table__tr tui-table__tr_border">
+                        <td class="tui-table__td tui-text_body-s">Sod</td>
+                        <td class="tui-table__td tui-text_body-s">
+                          {{ transposeNum()['sod']!['25%'] }}
+                        </td>
+                        <td class="tui-table__td tui-text_body-s">
+                          {{ transposeNum()['sod']!['50%'] }}
+                        </td>
+                        <td class="tui-table__td tui-text_body-s">
+                          {{ transposeNum()['sod']!['75%'] }}
+                        </td>
+                        <td class="tui-table__td tui-text_body-s">
+                          {{ transposeNum()['sod']!['Count'] }}
+                        </td>
+                        <td class="tui-table__td tui-text_body-s">
+                          {{ transposeNum()['sod']!['Max'] }}
+                        </td>
+                        <td class="tui-table__td tui-text_body-s">
+                          {{ transposeNum()['sod']!['Mean'] }}
+                        </td>
+                        <td class="tui-table__td tui-text_body-s">
+                          {{ transposeNum()['sod']!['Min'] }}
+                        </td>
+                        <td class="tui-table__td tui-text_body-s">
+                          {{ transposeNum()['sod']!['Missing'] }}
+                        </td>
+                        <td class="tui-table__td tui-text_body-s">
+                          {{ transposeNum()['sod']!['Std'] }}
+                        </td>
+                        <td class="tui-table__td tui-text_body-s">
+                          {{ transposeNum()['sod']!['Variance'] }}
+                        </td>
+                      </tr>
+                      <tr class="tui-table__tr tui-table__tr_border">
+                        <td class="tui-table__td tui-text_body-s">Su</td>
+                        <td class="tui-table__td tui-text_body-s">
+                          {{ transposeNum()['su']!['25%'] }}
+                        </td>
+                        <td class="tui-table__td tui-text_body-s">
+                          {{ transposeNum()['su']!['50%'] }}
+                        </td>
+                        <td class="tui-table__td tui-text_body-s">
+                          {{ transposeNum()['su']!['75%'] }}
+                        </td>
+                        <td class="tui-table__td tui-text_body-s">
+                          {{ transposeNum()['su']!['Count'] }}
+                        </td>
+                        <td class="tui-table__td tui-text_body-s">
+                          {{ transposeNum()['su']!['Max'] }}
+                        </td>
+                        <td class="tui-table__td tui-text_body-s">
+                          {{ transposeNum()['su']!['Mean'] }}
+                        </td>
+                        <td class="tui-table__td tui-text_body-s">
+                          {{ transposeNum()['su']!['Min'] }}
+                        </td>
+                        <td class="tui-table__td tui-text_body-s">
+                          {{ transposeNum()['su']!['Missing'] }}
+                        </td>
+                        <td class="tui-table__td tui-text_body-s">
+                          {{ transposeNum()['su']!['Std'] }}
+                        </td>
+                        <td class="tui-table__td tui-text_body-s">
+                          {{ transposeNum()['su']!['Variance'] }}
+                        </td>
+                      </tr>
+                      <tr class="tui-table__tr tui-table__tr_border">
+                        <td class="tui-table__td tui-text_body-s">Wc</td>
+                        <td class="tui-table__td tui-text_body-s">
+                          {{ transposeNum()['wc']!['25%'] }}
+                        </td>
+                        <td class="tui-table__td tui-text_body-s">
+                          {{ transposeNum()['wc']!['50%'] }}
+                        </td>
+                        <td class="tui-table__td tui-text_body-s">
+                          {{ transposeNum()['wc']!['75%'] }}
+                        </td>
+                        <td class="tui-table__td tui-text_body-s">
+                          {{ transposeNum()['wc']!['Count'] }}
+                        </td>
+                        <td class="tui-table__td tui-text_body-s">
+                          {{ transposeNum()['wc']!['Max'] }}
+                        </td>
+                        <td class="tui-table__td tui-text_body-s">
+                          {{ transposeNum()['wc']!['Mean'] }}
+                        </td>
+                        <td class="tui-table__td tui-text_body-s">
+                          {{ transposeNum()['wc']!['Min'] }}
+                        </td>
+                        <td class="tui-table__td tui-text_body-s">
+                          {{ transposeNum()['wc']!['Missing'] }}
+                        </td>
+                        <td class="tui-table__td tui-text_body-s">
+                          {{ transposeNum()['wc']!['Std'] }}
+                        </td>
+                        <td class="tui-table__td tui-text_body-s">
+                          {{ transposeNum()['wc']!['Variance'] }}
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </tui-scrollbar>
+              }
+            </tui-loader>
           </div>
         </div>
         <div class="row justify-content-center py-2">
@@ -1017,13 +1027,15 @@ const TaigaImports = [
               class="tui-text_body-xl text-center"
               style="color: var(--tui-success-fill); font-weight: 600;"
             >
-              out Layer Value
+              OutLair Value
             </p>
           </div>
         </div>
         <div class="row justify-content-center py-2">
           <div class="col-12">
-            <div echarts [options]="outLayerData()"></div>
+            <tui-loader [showLoader]="showOutLayerLoader" [overlay]="true">
+              <div echarts [options]="outLayerData()"></div>
+            </tui-loader>
           </div>
         </div>
         <div class="row justify-content-center py-4">
@@ -1038,168 +1050,174 @@ const TaigaImports = [
         </div>
         <div class="row justify-content-center py-2">
           <div class="col-11">
-            <table class="tui-table">
-              <tbody>
-                <tr class="tui-table__tr tui-table__tr_border">
-                  <td class="tui-table__th tui-text_body-s">Columns</td>
-                  <td class="tui-table__th tui-text_body-s">ane</td>
-                  <td class="tui-table__th tui-text_body-s">appet</td>
-                  <td class="tui-table__th tui-text_body-s">ba</td>
-                  <td class="tui-table__th tui-text_body-s">cad</td>
-                  <td class="tui-table__th tui-text_body-s">dm</td>
-                  <td class="tui-table__th tui-text_body-s">htn</td>
-                  <td class="tui-table__th tui-text_body-s">pc</td>
-                  <td class="tui-table__th tui-text_body-s">pcc</td>
-                  <td class="tui-table__th tui-text_body-s">pe</td>
-                  <td class="tui-table__th tui-text_body-s">rbc</td>
-                  <td class="tui-table__th tui-text_body-s">classification</td>
-                </tr>
-                <tr class="tui-table__tr tui-table__tr_border">
-                  <td class="tui-table__td tui-text_body-s">Count</td>
-                  <td class="tui-table__td tui-text_body-s">
-                    {{ transposeCat()['count']!['ane'] }}
-                  </td>
-                  <td class="tui-table__td tui-text_body-s">
-                    {{ transposeCat()['count']!['appet'] }}
-                  </td>
-                  <td class="tui-table__td tui-text_body-s">
-                    {{ transposeCat()['count']!['ba'] }}
-                  </td>
-                  <td class="tui-table__td tui-text_body-s">
-                    {{ transposeCat()['count']!['cad'] }}
-                  </td>
-                  <td class="tui-table__td tui-text_body-s">
-                    {{ transposeCat()['count']!['dm'] }}
-                  </td>
-                  <td class="tui-table__td tui-text_body-s">
-                    {{ transposeCat()['count']!['htn'] }}
-                  </td>
-                  <td class="tui-table__td tui-text_body-s">
-                    {{ transposeCat()['count']!['pc'] }}
-                  </td>
-                  <td class="tui-table__td tui-text_body-s">
-                    {{ transposeCat()['count']!['pcc'] }}
-                  </td>
-                  <td class="tui-table__td tui-text_body-s">
-                    {{ transposeCat()['count']!['pe'] }}
-                  </td>
-                  <td class="tui-table__td tui-text_body-s">
-                    {{ transposeCat()['count']!['rbc'] }}
-                  </td>
-                  <td class="tui-table__td tui-text_body-s">
-                    {{ transposeCat()['count']!['classification'] }}
-                  </td>
-                </tr>
-                <tr class="tui-table__tr tui-table__tr_border">
-                  <td class="tui-table__td tui-text_body-s">Freq</td>
-                  <td class="tui-table__td tui-text_body-s">
-                    {{ transposeCat()['freq']!['ane'] }}
-                  </td>
-                  <td class="tui-table__td tui-text_body-s">
-                    {{ transposeCat()['freq']!['appet'] }}
-                  </td>
-                  <td class="tui-table__td tui-text_body-s">
-                    {{ transposeCat()['freq']!['ba'] }}
-                  </td>
-                  <td class="tui-table__td tui-text_body-s">
-                    {{ transposeCat()['freq']!['cad'] }}
-                  </td>
-                  <td class="tui-table__td tui-text_body-s">
-                    {{ transposeCat()['freq']!['dm'] }}
-                  </td>
-                  <td class="tui-table__td tui-text_body-s">
-                    {{ transposeCat()['freq']!['htn'] }}
-                  </td>
-                  <td class="tui-table__td tui-text_body-s">
-                    {{ transposeCat()['freq']!['pc'] }}
-                  </td>
-                  <td class="tui-table__td tui-text_body-s">
-                    {{ transposeCat()['freq']!['pcc'] }}
-                  </td>
-                  <td class="tui-table__td tui-text_body-s">
-                    {{ transposeCat()['freq']!['pe'] }}
-                  </td>
-                  <td class="tui-table__td tui-text_body-s">
-                    {{ transposeCat()['freq']!['rbc'] }}
-                  </td>
-                  <td class="tui-table__td tui-text_body-s">
-                    {{ transposeCat()['freq']!['classification'] }}
-                  </td>
-                </tr>
-                <tr class="tui-table__tr tui-table__tr_border">
-                  <td class="tui-table__td tui-text_body-s">Top</td>
-                  <td class="tui-table__td tui-text_body-s">
-                    {{ transposeCat()['top']!['ane'] }}
-                  </td>
-                  <td class="tui-table__td tui-text_body-s">
-                    {{ transposeCat()['top']!['appet'] }}
-                  </td>
-                  <td class="tui-table__td tui-text_body-s">
-                    {{ transposeCat()['top']!['ba'] }}
-                  </td>
-                  <td class="tui-table__td tui-text_body-s">
-                    {{ transposeCat()['top']!['cad'] }}
-                  </td>
-                  <td class="tui-table__td tui-text_body-s">
-                    {{ transposeCat()['top']!['dm'] }}
-                  </td>
-                  <td class="tui-table__td tui-text_body-s">
-                    {{ transposeCat()['top']!['htn'] }}
-                  </td>
-                  <td class="tui-table__td tui-text_body-s">
-                    {{ transposeCat()['top']!['pc'] }}
-                  </td>
-                  <td class="tui-table__td tui-text_body-s">
-                    {{ transposeCat()['top']!['pcc'] }}
-                  </td>
-                  <td class="tui-table__td tui-text_body-s">
-                    {{ transposeCat()['top']!['pe'] }}
-                  </td>
-                  <td class="tui-table__td tui-text_body-s">
-                    {{ transposeCat()['top']!['rbc'] }}
-                  </td>
-                  <td class="tui-table__td tui-text_body-s">
-                    {{ transposeCat()['top']!['classification'] }}
-                  </td>
-                </tr>
-                <tr class="tui-table__tr tui-table__tr_border">
-                  <td class="tui-table__td tui-text_body-s">Unique</td>
-                  <td class="tui-table__td tui-text_body-s">
-                    {{ transposeCat()['unique']!['ane'] }}
-                  </td>
-                  <td class="tui-table__td tui-text_body-s">
-                    {{ transposeCat()['unique']!['appet'] }}
-                  </td>
-                  <td class="tui-table__td tui-text_body-s">
-                    {{ transposeCat()['unique']!['ba'] }}
-                  </td>
-                  <td class="tui-table__td tui-text_body-s">
-                    {{ transposeCat()['unique']!['cad'] }}
-                  </td>
-                  <td class="tui-table__td tui-text_body-s">
-                    {{ transposeCat()['unique']!['dm'] }}
-                  </td>
-                  <td class="tui-table__td tui-text_body-s">
-                    {{ transposeCat()['unique']!['htn'] }}
-                  </td>
-                  <td class="tui-table__td tui-text_body-s">
-                    {{ transposeCat()['unique']!['pc'] }}
-                  </td>
-                  <td class="tui-table__td tui-text_body-s">
-                    {{ transposeCat()['unique']!['pcc'] }}
-                  </td>
-                  <td class="tui-table__td tui-text_body-s">
-                    {{ transposeCat()['unique']!['pe'] }}
-                  </td>
-                  <td class="tui-table__td tui-text_body-s">
-                    {{ transposeCat()['unique']!['rbc'] }}
-                  </td>
-                  <td class="tui-table__td tui-text_body-s">
-                    {{ transposeCat()['unique']!['classification'] }}
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+            <tui-loader [showLoader]="showTransposeCatLoader" [overlay]="true">
+              @if(!showTransposeCatLoader){
+              <table class="tui-table">
+                <tbody>
+                  <tr class="tui-table__tr tui-table__tr_border">
+                    <td class="tui-table__th tui-text_body-s">Columns</td>
+                    <td class="tui-table__th tui-text_body-s">ane</td>
+                    <td class="tui-table__th tui-text_body-s">appet</td>
+                    <td class="tui-table__th tui-text_body-s">ba</td>
+                    <td class="tui-table__th tui-text_body-s">cad</td>
+                    <td class="tui-table__th tui-text_body-s">dm</td>
+                    <td class="tui-table__th tui-text_body-s">htn</td>
+                    <td class="tui-table__th tui-text_body-s">pc</td>
+                    <td class="tui-table__th tui-text_body-s">pcc</td>
+                    <td class="tui-table__th tui-text_body-s">pe</td>
+                    <td class="tui-table__th tui-text_body-s">rbc</td>
+                    <td class="tui-table__th tui-text_body-s">
+                      classification
+                    </td>
+                  </tr>
+                  <tr class="tui-table__tr tui-table__tr_border">
+                    <td class="tui-table__td tui-text_body-s">Count</td>
+                    <td class="tui-table__td tui-text_body-s">
+                      {{ transposeCat()['count']!['ane'] }}
+                    </td>
+                    <td class="tui-table__td tui-text_body-s">
+                      {{ transposeCat()['count']!['appet'] }}
+                    </td>
+                    <td class="tui-table__td tui-text_body-s">
+                      {{ transposeCat()['count']!['ba'] }}
+                    </td>
+                    <td class="tui-table__td tui-text_body-s">
+                      {{ transposeCat()['count']!['cad'] }}
+                    </td>
+                    <td class="tui-table__td tui-text_body-s">
+                      {{ transposeCat()['count']!['dm'] }}
+                    </td>
+                    <td class="tui-table__td tui-text_body-s">
+                      {{ transposeCat()['count']!['htn'] }}
+                    </td>
+                    <td class="tui-table__td tui-text_body-s">
+                      {{ transposeCat()['count']!['pc'] }}
+                    </td>
+                    <td class="tui-table__td tui-text_body-s">
+                      {{ transposeCat()['count']!['pcc'] }}
+                    </td>
+                    <td class="tui-table__td tui-text_body-s">
+                      {{ transposeCat()['count']!['pe'] }}
+                    </td>
+                    <td class="tui-table__td tui-text_body-s">
+                      {{ transposeCat()['count']!['rbc'] }}
+                    </td>
+                    <td class="tui-table__td tui-text_body-s">
+                      {{ transposeCat()['count']!['classification'] }}
+                    </td>
+                  </tr>
+                  <tr class="tui-table__tr tui-table__tr_border">
+                    <td class="tui-table__td tui-text_body-s">Freq</td>
+                    <td class="tui-table__td tui-text_body-s">
+                      {{ transposeCat()['freq']!['ane'] }}
+                    </td>
+                    <td class="tui-table__td tui-text_body-s">
+                      {{ transposeCat()['freq']!['appet'] }}
+                    </td>
+                    <td class="tui-table__td tui-text_body-s">
+                      {{ transposeCat()['freq']!['ba'] }}
+                    </td>
+                    <td class="tui-table__td tui-text_body-s">
+                      {{ transposeCat()['freq']!['cad'] }}
+                    </td>
+                    <td class="tui-table__td tui-text_body-s">
+                      {{ transposeCat()['freq']!['dm'] }}
+                    </td>
+                    <td class="tui-table__td tui-text_body-s">
+                      {{ transposeCat()['freq']!['htn'] }}
+                    </td>
+                    <td class="tui-table__td tui-text_body-s">
+                      {{ transposeCat()['freq']!['pc'] }}
+                    </td>
+                    <td class="tui-table__td tui-text_body-s">
+                      {{ transposeCat()['freq']!['pcc'] }}
+                    </td>
+                    <td class="tui-table__td tui-text_body-s">
+                      {{ transposeCat()['freq']!['pe'] }}
+                    </td>
+                    <td class="tui-table__td tui-text_body-s">
+                      {{ transposeCat()['freq']!['rbc'] }}
+                    </td>
+                    <td class="tui-table__td tui-text_body-s">
+                      {{ transposeCat()['freq']!['classification'] }}
+                    </td>
+                  </tr>
+                  <tr class="tui-table__tr tui-table__tr_border">
+                    <td class="tui-table__td tui-text_body-s">Top</td>
+                    <td class="tui-table__td tui-text_body-s">
+                      {{ transposeCat()['top']!['ane'] }}
+                    </td>
+                    <td class="tui-table__td tui-text_body-s">
+                      {{ transposeCat()['top']!['appet'] }}
+                    </td>
+                    <td class="tui-table__td tui-text_body-s">
+                      {{ transposeCat()['top']!['ba'] }}
+                    </td>
+                    <td class="tui-table__td tui-text_body-s">
+                      {{ transposeCat()['top']!['cad'] }}
+                    </td>
+                    <td class="tui-table__td tui-text_body-s">
+                      {{ transposeCat()['top']!['dm'] }}
+                    </td>
+                    <td class="tui-table__td tui-text_body-s">
+                      {{ transposeCat()['top']!['htn'] }}
+                    </td>
+                    <td class="tui-table__td tui-text_body-s">
+                      {{ transposeCat()['top']!['pc'] }}
+                    </td>
+                    <td class="tui-table__td tui-text_body-s">
+                      {{ transposeCat()['top']!['pcc'] }}
+                    </td>
+                    <td class="tui-table__td tui-text_body-s">
+                      {{ transposeCat()['top']!['pe'] }}
+                    </td>
+                    <td class="tui-table__td tui-text_body-s">
+                      {{ transposeCat()['top']!['rbc'] }}
+                    </td>
+                    <td class="tui-table__td tui-text_body-s">
+                      {{ transposeCat()['top']!['classification'] }}
+                    </td>
+                  </tr>
+                  <tr class="tui-table__tr tui-table__tr_border">
+                    <td class="tui-table__td tui-text_body-s">Unique</td>
+                    <td class="tui-table__td tui-text_body-s">
+                      {{ transposeCat()['unique']!['ane'] }}
+                    </td>
+                    <td class="tui-table__td tui-text_body-s">
+                      {{ transposeCat()['unique']!['appet'] }}
+                    </td>
+                    <td class="tui-table__td tui-text_body-s">
+                      {{ transposeCat()['unique']!['ba'] }}
+                    </td>
+                    <td class="tui-table__td tui-text_body-s">
+                      {{ transposeCat()['unique']!['cad'] }}
+                    </td>
+                    <td class="tui-table__td tui-text_body-s">
+                      {{ transposeCat()['unique']!['dm'] }}
+                    </td>
+                    <td class="tui-table__td tui-text_body-s">
+                      {{ transposeCat()['unique']!['htn'] }}
+                    </td>
+                    <td class="tui-table__td tui-text_body-s">
+                      {{ transposeCat()['unique']!['pc'] }}
+                    </td>
+                    <td class="tui-table__td tui-text_body-s">
+                      {{ transposeCat()['unique']!['pcc'] }}
+                    </td>
+                    <td class="tui-table__td tui-text_body-s">
+                      {{ transposeCat()['unique']!['pe'] }}
+                    </td>
+                    <td class="tui-table__td tui-text_body-s">
+                      {{ transposeCat()['unique']!['rbc'] }}
+                    </td>
+                    <td class="tui-table__td tui-text_body-s">
+                      {{ transposeCat()['unique']!['classification'] }}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              }
+            </tui-loader>
           </div>
         </div>
         <div class="row justify-content-center py-2">
@@ -1214,7 +1232,9 @@ const TaigaImports = [
         </div>
         <div class="row justify-content-center py-2">
           <div class="col-12">
-            <div echarts [options]="PairPlotData()"></div>
+            <tui-loader [showLoader]="showPairPlotLoader" [overlay]="true">
+              <div echarts [options]="PairPlotData()"></div>
+            </tui-loader>
           </div>
         </div>
         <div class="row justify-content-center py-2">
@@ -1227,417 +1247,421 @@ const TaigaImports = [
             </p>
           </div>
         </div>
-        <div class="row justify-content-center py-2">
-          <div class="col-1">
-            <table class="tui-table">
-              <tbody>
-                <tr class="tui-table__tr tui-table__tr_border">
-                  <td class="tui-table__th tui-text_body-s">Age</td>
-                </tr>
-                <tr class="tui-table__tr tui-table__tr_border">
-                  <td class="tui-table__td tui-text_body-s">
-                    {{ allRatio()['age']['0'] }}
-                  </td>
-                </tr>
-                <tr class="tui-table__tr tui-table__tr_border">
-                  <td class="tui-table__td tui-text_body-s">
-                    {{ allRatio()['age']['1'] }}
-                  </td>
-                </tr>
-                <tr class="tui-table__tr tui-table__tr_border">
-                  <td class="tui-table__td tui-text_body-s">
-                    {{ allRatio()['age']['2'] }}
-                  </td>
-                </tr>
-                <tr class="tui-table__tr tui-table__tr_border">
-                  <td class="tui-table__td tui-text_body-s">
-                    {{ allRatio()['age']['3'] }}
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+        <tui-loader [showLoader]="showAllRatioLoader" [overlay]="true">
+          @if(!showAllRatioLoader){
+          <div class="row justify-content-center py-2">
+            <div class="col-1">
+              <table class="tui-table">
+                <tbody>
+                  <tr class="tui-table__tr tui-table__tr_border">
+                    <td class="tui-table__th tui-text_body-s">Age</td>
+                  </tr>
+                  <tr class="tui-table__tr tui-table__tr_border">
+                    <td class="tui-table__td tui-text_body-s">
+                      {{ allRatio()['age']['0'] }}
+                    </td>
+                  </tr>
+                  <tr class="tui-table__tr tui-table__tr_border">
+                    <td class="tui-table__td tui-text_body-s">
+                      {{ allRatio()['age']['1'] }}
+                    </td>
+                  </tr>
+                  <tr class="tui-table__tr tui-table__tr_border">
+                    <td class="tui-table__td tui-text_body-s">
+                      {{ allRatio()['age']['2'] }}
+                    </td>
+                  </tr>
+                  <tr class="tui-table__tr tui-table__tr_border">
+                    <td class="tui-table__td tui-text_body-s">
+                      {{ allRatio()['age']['3'] }}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="col-1">
+              <table class="tui-table">
+                <tbody>
+                  <tr class="tui-table__tr tui-table__tr_border">
+                    <td class="tui-table__th tui-text_body-s">Al</td>
+                  </tr>
+                  <tr class="tui-table__tr tui-table__tr_border">
+                    <td class="tui-table__td tui-text_body-s">
+                      {{ allRatio()['al']['0'] }}
+                    </td>
+                  </tr>
+                  <tr class="tui-table__tr tui-table__tr_border">
+                    <td class="tui-table__td tui-text_body-s">
+                      {{ allRatio()['al']['1'] }}
+                    </td>
+                  </tr>
+                  <tr class="tui-table__tr tui-table__tr_border">
+                    <td class="tui-table__td tui-text_body-s">
+                      {{ allRatio()['al']['2'] }}
+                    </td>
+                  </tr>
+                  <tr class="tui-table__tr tui-table__tr_border">
+                    <td class="tui-table__td tui-text_body-s">
+                      {{ allRatio()['al']['3'] }}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="col-1">
+              <table class="tui-table">
+                <tbody>
+                  <tr class="tui-table__tr tui-table__tr_border">
+                    <td class="tui-table__th tui-text_body-s">Bgr</td>
+                  </tr>
+                  <tr class="tui-table__tr tui-table__tr_border">
+                    <td class="tui-table__td tui-text_body-s">
+                      {{ allRatio()['bgr']['0'] }}
+                    </td>
+                  </tr>
+                  <tr class="tui-table__tr tui-table__tr_border">
+                    <td class="tui-table__td tui-text_body-s">
+                      {{ allRatio()['bgr']['1'] }}
+                    </td>
+                  </tr>
+                  <tr class="tui-table__tr tui-table__tr_border">
+                    <td class="tui-table__td tui-text_body-s">
+                      {{ allRatio()['bgr']['2'] }}
+                    </td>
+                  </tr>
+                  <tr class="tui-table__tr tui-table__tr_border">
+                    <td class="tui-table__td tui-text_body-s">
+                      {{ allRatio()['bgr']['3'] }}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="col-1">
+              <table class="tui-table">
+                <tbody>
+                  <tr class="tui-table__tr tui-table__tr_border">
+                    <td class="tui-table__th tui-text_body-s">Bp</td>
+                  </tr>
+                  <tr class="tui-table__tr tui-table__tr_border">
+                    <td class="tui-table__td tui-text_body-s">
+                      {{ allRatio()['bp']['0'] }}
+                    </td>
+                  </tr>
+                  <tr class="tui-table__tr tui-table__tr_border">
+                    <td class="tui-table__td tui-text_body-s">
+                      {{ allRatio()['bp']['1'] }}
+                    </td>
+                  </tr>
+                  <tr class="tui-table__tr tui-table__tr_border">
+                    <td class="tui-table__td tui-text_body-s">
+                      {{ allRatio()['bp']['2'] }}
+                    </td>
+                  </tr>
+                  <tr class="tui-table__tr tui-table__tr_border">
+                    <td class="tui-table__td tui-text_body-s">
+                      {{ allRatio()['bp']['3'] }}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="col-1">
+              <table class="tui-table">
+                <tbody>
+                  <tr class="tui-table__tr tui-table__tr_border">
+                    <td class="tui-table__th tui-text_body-s">Bu</td>
+                  </tr>
+                  <tr class="tui-table__tr tui-table__tr_border">
+                    <td class="tui-table__td tui-text_body-s">
+                      {{ allRatio()['bu']['0'] }}
+                    </td>
+                  </tr>
+                  <tr class="tui-table__tr tui-table__tr_border">
+                    <td class="tui-table__td tui-text_body-s">
+                      {{ allRatio()['bu']['1'] }}
+                    </td>
+                  </tr>
+                  <tr class="tui-table__tr tui-table__tr_border">
+                    <td class="tui-table__td tui-text_body-s">
+                      {{ allRatio()['bu']['2'] }}
+                    </td>
+                  </tr>
+                  <tr class="tui-table__tr tui-table__tr_border">
+                    <td class="tui-table__td tui-text_body-s">
+                      {{ allRatio()['bu']['3'] }}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="col-1">
+              <table class="tui-table">
+                <tbody>
+                  <tr class="tui-table__tr tui-table__tr_border">
+                    <td class="tui-table__th tui-text_body-s">Hemo</td>
+                  </tr>
+                  <tr class="tui-table__tr tui-table__tr_border">
+                    <td class="tui-table__td tui-text_body-s">
+                      {{ allRatio()['hemo']['0'] }}
+                    </td>
+                  </tr>
+                  <tr class="tui-table__tr tui-table__tr_border">
+                    <td class="tui-table__td tui-text_body-s">
+                      {{ allRatio()['hemo']['1'] }}
+                    </td>
+                  </tr>
+                  <tr class="tui-table__tr tui-table__tr_border">
+                    <td class="tui-table__td tui-text_body-s">
+                      {{ allRatio()['hemo']['2'] }}
+                    </td>
+                  </tr>
+                  <tr class="tui-table__tr tui-table__tr_border">
+                    <td class="tui-table__td tui-text_body-s">
+                      {{ allRatio()['hemo']['3'] }}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="col-1">
+              <table class="tui-table">
+                <tbody>
+                  <tr class="tui-table__tr tui-table__tr_border">
+                    <td class="tui-table__th tui-text_body-s">Pcv</td>
+                  </tr>
+                  <tr class="tui-table__tr tui-table__tr_border">
+                    <td class="tui-table__td tui-text_body-s">
+                      {{ allRatio()['pcv']['0'] }}
+                    </td>
+                  </tr>
+                  <tr class="tui-table__tr tui-table__tr_border">
+                    <td class="tui-table__td tui-text_body-s">
+                      {{ allRatio()['pcv']['1'] }}
+                    </td>
+                  </tr>
+                  <tr class="tui-table__tr tui-table__tr_border">
+                    <td class="tui-table__td tui-text_body-s">
+                      {{ allRatio()['pcv']['2'] }}
+                    </td>
+                  </tr>
+                  <tr class="tui-table__tr tui-table__tr_border">
+                    <td class="tui-table__td tui-text_body-s">
+                      {{ allRatio()['pcv']['3'] }}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="col-1">
+              <table class="tui-table">
+                <tbody>
+                  <tr class="tui-table__tr tui-table__tr_border">
+                    <td class="tui-table__th tui-text_body-s">Pot</td>
+                  </tr>
+                  <tr class="tui-table__tr tui-table__tr_border">
+                    <td class="tui-table__td tui-text_body-s">
+                      {{ allRatio()['pot']['0'] }}
+                    </td>
+                  </tr>
+                  <tr class="tui-table__tr tui-table__tr_border">
+                    <td class="tui-table__td tui-text_body-s">
+                      {{ allRatio()['pot']['1'] }}
+                    </td>
+                  </tr>
+                  <tr class="tui-table__tr tui-table__tr_border">
+                    <td class="tui-table__td tui-text_body-s">
+                      {{ allRatio()['pot']['2'] }}
+                    </td>
+                  </tr>
+                  <tr class="tui-table__tr tui-table__tr_border">
+                    <td class="tui-table__td tui-text_body-s">
+                      {{ allRatio()['pot']['3'] }}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
-          <div class="col-1">
-            <table class="tui-table">
-              <tbody>
-                <tr class="tui-table__tr tui-table__tr_border">
-                  <td class="tui-table__th tui-text_body-s">Al</td>
-                </tr>
-                <tr class="tui-table__tr tui-table__tr_border">
-                  <td class="tui-table__td tui-text_body-s">
-                    {{ allRatio()['al']['0'] }}
-                  </td>
-                </tr>
-                <tr class="tui-table__tr tui-table__tr_border">
-                  <td class="tui-table__td tui-text_body-s">
-                    {{ allRatio()['al']['1'] }}
-                  </td>
-                </tr>
-                <tr class="tui-table__tr tui-table__tr_border">
-                  <td class="tui-table__td tui-text_body-s">
-                    {{ allRatio()['al']['2'] }}
-                  </td>
-                </tr>
-                <tr class="tui-table__tr tui-table__tr_border">
-                  <td class="tui-table__td tui-text_body-s">
-                    {{ allRatio()['al']['3'] }}
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+          <br />
+          <div class="row justify-content-center py-2">
+            <div class="col-1">
+              <table class="tui-table">
+                <tbody>
+                  <tr class="tui-table__tr tui-table__tr_border">
+                    <td class="tui-table__th tui-text_body-s">Rc</td>
+                  </tr>
+                  <tr class="tui-table__tr tui-table__tr_border">
+                    <td class="tui-table__td tui-text_body-s">
+                      {{ allRatio()['rc']['0'] }}
+                    </td>
+                  </tr>
+                  <tr class="tui-table__tr tui-table__tr_border">
+                    <td class="tui-table__td tui-text_body-s">
+                      {{ allRatio()['rc']['1'] }}
+                    </td>
+                  </tr>
+                  <tr class="tui-table__tr tui-table__tr_border">
+                    <td class="tui-table__td tui-text_body-s">
+                      {{ allRatio()['rc']['2'] }}
+                    </td>
+                  </tr>
+                  <tr class="tui-table__tr tui-table__tr_border">
+                    <td class="tui-table__td tui-text_body-s">
+                      {{ allRatio()['rc']['3'] }}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="col-1">
+              <table class="tui-table">
+                <tbody>
+                  <tr class="tui-table__tr tui-table__tr_border">
+                    <td class="tui-table__th tui-text_body-s">Sc</td>
+                  </tr>
+                  <tr class="tui-table__tr tui-table__tr_border">
+                    <td class="tui-table__td tui-text_body-s">
+                      {{ allRatio()['sc']['0'] }}
+                    </td>
+                  </tr>
+                  <tr class="tui-table__tr tui-table__tr_border">
+                    <td class="tui-table__td tui-text_body-s">
+                      {{ allRatio()['sc']['1'] }}
+                    </td>
+                  </tr>
+                  <tr class="tui-table__tr tui-table__tr_border">
+                    <td class="tui-table__td tui-text_body-s">
+                      {{ allRatio()['sc']['2'] }}
+                    </td>
+                  </tr>
+                  <tr class="tui-table__tr tui-table__tr_border">
+                    <td class="tui-table__td tui-text_body-s">
+                      {{ allRatio()['sc']['3'] }}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="col-1">
+              <table class="tui-table">
+                <tbody>
+                  <tr class="tui-table__tr tui-table__tr_border">
+                    <td class="tui-table__th tui-text_body-s">Sg</td>
+                  </tr>
+                  <tr class="tui-table__tr tui-table__tr_border">
+                    <td class="tui-table__td tui-text_body-s">
+                      {{ allRatio()['sg']['0'] }}
+                    </td>
+                  </tr>
+                  <tr class="tui-table__tr tui-table__tr_border">
+                    <td class="tui-table__td tui-text_body-s">
+                      {{ allRatio()['sg']['1'] }}
+                    </td>
+                  </tr>
+                  <tr class="tui-table__tr tui-table__tr_border">
+                    <td class="tui-table__td tui-text_body-s">
+                      {{ allRatio()['sg']['2'] }}
+                    </td>
+                  </tr>
+                  <tr class="tui-table__tr tui-table__tr_border">
+                    <td class="tui-table__td tui-text_body-s">
+                      {{ allRatio()['sg']['3'] }}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="col-1">
+              <table class="tui-table">
+                <tbody>
+                  <tr class="tui-table__tr tui-table__tr_border">
+                    <td class="tui-table__th tui-text_body-s">Sod</td>
+                  </tr>
+                  <tr class="tui-table__tr tui-table__tr_border">
+                    <td class="tui-table__td tui-text_body-s">
+                      {{ allRatio()['sod']['0'] }}
+                    </td>
+                  </tr>
+                  <tr class="tui-table__tr tui-table__tr_border">
+                    <td class="tui-table__td tui-text_body-s">
+                      {{ allRatio()['sod']['1'] }}
+                    </td>
+                  </tr>
+                  <tr class="tui-table__tr tui-table__tr_border">
+                    <td class="tui-table__td tui-text_body-s">
+                      {{ allRatio()['sod']['2'] }}
+                    </td>
+                  </tr>
+                  <tr class="tui-table__tr tui-table__tr_border">
+                    <td class="tui-table__td tui-text_body-s">
+                      {{ allRatio()['sod']['3'] }}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="col-1">
+              <table class="tui-table">
+                <tbody>
+                  <tr class="tui-table__tr tui-table__tr_border">
+                    <td class="tui-table__th tui-text_body-s">Su</td>
+                  </tr>
+                  <tr class="tui-table__tr tui-table__tr_border">
+                    <td class="tui-table__td tui-text_body-s">
+                      {{ allRatio()['su']['0'] }}
+                    </td>
+                  </tr>
+                  <tr class="tui-table__tr tui-table__tr_border">
+                    <td class="tui-table__td tui-text_body-s">
+                      {{ allRatio()['su']['1'] }}
+                    </td>
+                  </tr>
+                  <tr class="tui-table__tr tui-table__tr_border">
+                    <td class="tui-table__td tui-text_body-s">
+                      {{ allRatio()['su']['2'] }}
+                    </td>
+                  </tr>
+                  <tr class="tui-table__tr tui-table__tr_border">
+                    <td class="tui-table__td tui-text_body-s">
+                      {{ allRatio()['su']['3'] }}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="col-1">
+              <table class="tui-table">
+                <tbody>
+                  <tr class="tui-table__tr tui-table__tr_border">
+                    <td class="tui-table__th tui-text_body-s">Wc</td>
+                  </tr>
+                  <tr class="tui-table__tr tui-table__tr_border">
+                    <td class="tui-table__td tui-text_body-s">
+                      {{ allRatio()['wc']['0'] }}
+                    </td>
+                  </tr>
+                  <tr class="tui-table__tr tui-table__tr_border">
+                    <td class="tui-table__td tui-text_body-s">
+                      {{ allRatio()['wc']['1'] }}
+                    </td>
+                  </tr>
+                  <tr class="tui-table__tr tui-table__tr_border">
+                    <td class="tui-table__td tui-text_body-s">
+                      {{ allRatio()['wc']['2'] }}
+                    </td>
+                  </tr>
+                  <tr class="tui-table__tr tui-table__tr_border">
+                    <td class="tui-table__td tui-text_body-s">
+                      {{ allRatio()['wc']['3'] }}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
-          <div class="col-1">
-            <table class="tui-table">
-              <tbody>
-                <tr class="tui-table__tr tui-table__tr_border">
-                  <td class="tui-table__th tui-text_body-s">Bgr</td>
-                </tr>
-                <tr class="tui-table__tr tui-table__tr_border">
-                  <td class="tui-table__td tui-text_body-s">
-                    {{ allRatio()['bgr']['0'] }}
-                  </td>
-                </tr>
-                <tr class="tui-table__tr tui-table__tr_border">
-                  <td class="tui-table__td tui-text_body-s">
-                    {{ allRatio()['bgr']['1'] }}
-                  </td>
-                </tr>
-                <tr class="tui-table__tr tui-table__tr_border">
-                  <td class="tui-table__td tui-text_body-s">
-                    {{ allRatio()['bgr']['2'] }}
-                  </td>
-                </tr>
-                <tr class="tui-table__tr tui-table__tr_border">
-                  <td class="tui-table__td tui-text_body-s">
-                    {{ allRatio()['bgr']['3'] }}
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <div class="col-1">
-            <table class="tui-table">
-              <tbody>
-                <tr class="tui-table__tr tui-table__tr_border">
-                  <td class="tui-table__th tui-text_body-s">Bp</td>
-                </tr>
-                <tr class="tui-table__tr tui-table__tr_border">
-                  <td class="tui-table__td tui-text_body-s">
-                    {{ allRatio()['bp']['0'] }}
-                  </td>
-                </tr>
-                <tr class="tui-table__tr tui-table__tr_border">
-                  <td class="tui-table__td tui-text_body-s">
-                    {{ allRatio()['bp']['1'] }}
-                  </td>
-                </tr>
-                <tr class="tui-table__tr tui-table__tr_border">
-                  <td class="tui-table__td tui-text_body-s">
-                    {{ allRatio()['bp']['2'] }}
-                  </td>
-                </tr>
-                <tr class="tui-table__tr tui-table__tr_border">
-                  <td class="tui-table__td tui-text_body-s">
-                    {{ allRatio()['bp']['3'] }}
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <div class="col-1">
-            <table class="tui-table">
-              <tbody>
-                <tr class="tui-table__tr tui-table__tr_border">
-                  <td class="tui-table__th tui-text_body-s">Bu</td>
-                </tr>
-                <tr class="tui-table__tr tui-table__tr_border">
-                  <td class="tui-table__td tui-text_body-s">
-                    {{ allRatio()['bu']['0'] }}
-                  </td>
-                </tr>
-                <tr class="tui-table__tr tui-table__tr_border">
-                  <td class="tui-table__td tui-text_body-s">
-                    {{ allRatio()['bu']['1'] }}
-                  </td>
-                </tr>
-                <tr class="tui-table__tr tui-table__tr_border">
-                  <td class="tui-table__td tui-text_body-s">
-                    {{ allRatio()['bu']['2'] }}
-                  </td>
-                </tr>
-                <tr class="tui-table__tr tui-table__tr_border">
-                  <td class="tui-table__td tui-text_body-s">
-                    {{ allRatio()['bu']['3'] }}
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <div class="col-1">
-            <table class="tui-table">
-              <tbody>
-                <tr class="tui-table__tr tui-table__tr_border">
-                  <td class="tui-table__th tui-text_body-s">Hemo</td>
-                </tr>
-                <tr class="tui-table__tr tui-table__tr_border">
-                  <td class="tui-table__td tui-text_body-s">
-                    {{ allRatio()['hemo']['0'] }}
-                  </td>
-                </tr>
-                <tr class="tui-table__tr tui-table__tr_border">
-                  <td class="tui-table__td tui-text_body-s">
-                    {{ allRatio()['hemo']['1'] }}
-                  </td>
-                </tr>
-                <tr class="tui-table__tr tui-table__tr_border">
-                  <td class="tui-table__td tui-text_body-s">
-                    {{ allRatio()['hemo']['2'] }}
-                  </td>
-                </tr>
-                <tr class="tui-table__tr tui-table__tr_border">
-                  <td class="tui-table__td tui-text_body-s">
-                    {{ allRatio()['hemo']['3'] }}
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <div class="col-1">
-            <table class="tui-table">
-              <tbody>
-                <tr class="tui-table__tr tui-table__tr_border">
-                  <td class="tui-table__th tui-text_body-s">Pcv</td>
-                </tr>
-                <tr class="tui-table__tr tui-table__tr_border">
-                  <td class="tui-table__td tui-text_body-s">
-                    {{ allRatio()['pcv']['0'] }}
-                  </td>
-                </tr>
-                <tr class="tui-table__tr tui-table__tr_border">
-                  <td class="tui-table__td tui-text_body-s">
-                    {{ allRatio()['pcv']['1'] }}
-                  </td>
-                </tr>
-                <tr class="tui-table__tr tui-table__tr_border">
-                  <td class="tui-table__td tui-text_body-s">
-                    {{ allRatio()['pcv']['2'] }}
-                  </td>
-                </tr>
-                <tr class="tui-table__tr tui-table__tr_border">
-                  <td class="tui-table__td tui-text_body-s">
-                    {{ allRatio()['pcv']['3'] }}
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <div class="col-1">
-            <table class="tui-table">
-              <tbody>
-                <tr class="tui-table__tr tui-table__tr_border">
-                  <td class="tui-table__th tui-text_body-s">Pot</td>
-                </tr>
-                <tr class="tui-table__tr tui-table__tr_border">
-                  <td class="tui-table__td tui-text_body-s">
-                    {{ allRatio()['pot']['0'] }}
-                  </td>
-                </tr>
-                <tr class="tui-table__tr tui-table__tr_border">
-                  <td class="tui-table__td tui-text_body-s">
-                    {{ allRatio()['pot']['1'] }}
-                  </td>
-                </tr>
-                <tr class="tui-table__tr tui-table__tr_border">
-                  <td class="tui-table__td tui-text_body-s">
-                    {{ allRatio()['pot']['2'] }}
-                  </td>
-                </tr>
-                <tr class="tui-table__tr tui-table__tr_border">
-                  <td class="tui-table__td tui-text_body-s">
-                    {{ allRatio()['pot']['3'] }}
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-        <br />
-        <div class="row justify-content-center py-2">
-          <div class="col-1">
-            <table class="tui-table">
-              <tbody>
-                <tr class="tui-table__tr tui-table__tr_border">
-                  <td class="tui-table__th tui-text_body-s">Rc</td>
-                </tr>
-                <tr class="tui-table__tr tui-table__tr_border">
-                  <td class="tui-table__td tui-text_body-s">
-                    {{ allRatio()['rc']['0'] }}
-                  </td>
-                </tr>
-                <tr class="tui-table__tr tui-table__tr_border">
-                  <td class="tui-table__td tui-text_body-s">
-                    {{ allRatio()['rc']['1'] }}
-                  </td>
-                </tr>
-                <tr class="tui-table__tr tui-table__tr_border">
-                  <td class="tui-table__td tui-text_body-s">
-                    {{ allRatio()['rc']['2'] }}
-                  </td>
-                </tr>
-                <tr class="tui-table__tr tui-table__tr_border">
-                  <td class="tui-table__td tui-text_body-s">
-                    {{ allRatio()['rc']['3'] }}
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <div class="col-1">
-            <table class="tui-table">
-              <tbody>
-                <tr class="tui-table__tr tui-table__tr_border">
-                  <td class="tui-table__th tui-text_body-s">Sc</td>
-                </tr>
-                <tr class="tui-table__tr tui-table__tr_border">
-                  <td class="tui-table__td tui-text_body-s">
-                    {{ allRatio()['sc']['0'] }}
-                  </td>
-                </tr>
-                <tr class="tui-table__tr tui-table__tr_border">
-                  <td class="tui-table__td tui-text_body-s">
-                    {{ allRatio()['sc']['1'] }}
-                  </td>
-                </tr>
-                <tr class="tui-table__tr tui-table__tr_border">
-                  <td class="tui-table__td tui-text_body-s">
-                    {{ allRatio()['sc']['2'] }}
-                  </td>
-                </tr>
-                <tr class="tui-table__tr tui-table__tr_border">
-                  <td class="tui-table__td tui-text_body-s">
-                    {{ allRatio()['sc']['3'] }}
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <div class="col-1">
-            <table class="tui-table">
-              <tbody>
-                <tr class="tui-table__tr tui-table__tr_border">
-                  <td class="tui-table__th tui-text_body-s">Sg</td>
-                </tr>
-                <tr class="tui-table__tr tui-table__tr_border">
-                  <td class="tui-table__td tui-text_body-s">
-                    {{ allRatio()['sg']['0'] }}
-                  </td>
-                </tr>
-                <tr class="tui-table__tr tui-table__tr_border">
-                  <td class="tui-table__td tui-text_body-s">
-                    {{ allRatio()['sg']['1'] }}
-                  </td>
-                </tr>
-                <tr class="tui-table__tr tui-table__tr_border">
-                  <td class="tui-table__td tui-text_body-s">
-                    {{ allRatio()['sg']['2'] }}
-                  </td>
-                </tr>
-                <tr class="tui-table__tr tui-table__tr_border">
-                  <td class="tui-table__td tui-text_body-s">
-                    {{ allRatio()['sg']['3'] }}
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <div class="col-1">
-            <table class="tui-table">
-              <tbody>
-                <tr class="tui-table__tr tui-table__tr_border">
-                  <td class="tui-table__th tui-text_body-s">Sod</td>
-                </tr>
-                <tr class="tui-table__tr tui-table__tr_border">
-                  <td class="tui-table__td tui-text_body-s">
-                    {{ allRatio()['sod']['0'] }}
-                  </td>
-                </tr>
-                <tr class="tui-table__tr tui-table__tr_border">
-                  <td class="tui-table__td tui-text_body-s">
-                    {{ allRatio()['sod']['1'] }}
-                  </td>
-                </tr>
-                <tr class="tui-table__tr tui-table__tr_border">
-                  <td class="tui-table__td tui-text_body-s">
-                    {{ allRatio()['sod']['2'] }}
-                  </td>
-                </tr>
-                <tr class="tui-table__tr tui-table__tr_border">
-                  <td class="tui-table__td tui-text_body-s">
-                    {{ allRatio()['sod']['3'] }}
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <div class="col-1">
-            <table class="tui-table">
-              <tbody>
-                <tr class="tui-table__tr tui-table__tr_border">
-                  <td class="tui-table__th tui-text_body-s">Su</td>
-                </tr>
-                <tr class="tui-table__tr tui-table__tr_border">
-                  <td class="tui-table__td tui-text_body-s">
-                    {{ allRatio()['su']['0'] }}
-                  </td>
-                </tr>
-                <tr class="tui-table__tr tui-table__tr_border">
-                  <td class="tui-table__td tui-text_body-s">
-                    {{ allRatio()['su']['1'] }}
-                  </td>
-                </tr>
-                <tr class="tui-table__tr tui-table__tr_border">
-                  <td class="tui-table__td tui-text_body-s">
-                    {{ allRatio()['su']['2'] }}
-                  </td>
-                </tr>
-                <tr class="tui-table__tr tui-table__tr_border">
-                  <td class="tui-table__td tui-text_body-s">
-                    {{ allRatio()['su']['3'] }}
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <div class="col-1">
-            <table class="tui-table">
-              <tbody>
-                <tr class="tui-table__tr tui-table__tr_border">
-                  <td class="tui-table__th tui-text_body-s">Wc</td>
-                </tr>
-                <tr class="tui-table__tr tui-table__tr_border">
-                  <td class="tui-table__td tui-text_body-s">
-                    {{ allRatio()['wc']['0'] }}
-                  </td>
-                </tr>
-                <tr class="tui-table__tr tui-table__tr_border">
-                  <td class="tui-table__td tui-text_body-s">
-                    {{ allRatio()['wc']['1'] }}
-                  </td>
-                </tr>
-                <tr class="tui-table__tr tui-table__tr_border">
-                  <td class="tui-table__td tui-text_body-s">
-                    {{ allRatio()['wc']['2'] }}
-                  </td>
-                </tr>
-                <tr class="tui-table__tr tui-table__tr_border">
-                  <td class="tui-table__td tui-text_body-s">
-                    {{ allRatio()['wc']['3'] }}
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
+          }
+        </tui-loader>
         }
       </div>
     </div>
@@ -1667,6 +1691,14 @@ export class EdaComponent implements OnInit {
   showDatasetStates = signal<boolean>(false);
   showMoreDetailsLoader = signal<boolean>(false);
   enableMoreDetails = signal<boolean>(false);
+
+  showMissingDataLoader = false;
+  showCorrelationLoader = false;
+  showTransposeNumLoader = false;
+  showTransposeCatLoader = false;
+  showPairPlotLoader = false;
+  showOutLayerLoader = false;
+  showAllRatioLoader = false;
 
   // Controller
   datasetController = new FormControl();
@@ -1726,11 +1758,9 @@ export class EdaComponent implements OnInit {
     ).subscribe((res) => {
       const [datasetStates, datasetNullCount] = res;
 
-      setTimeout(() => {
-        this.showDatasetStates.set(true);
-        this.enableMoreDetails.set(true);
-        this.showDTStatesLoader.update((value) => !value);
-      }, 2000);
+      this.showDatasetStates.set(true);
+      this.enableMoreDetails.set(true);
+      this.showDTStatesLoader.update((value) => !value);
 
       this.datasetStates.set(datasetStates);
       this.nullCount.set(datasetNullCount);
@@ -2498,11 +2528,13 @@ export class EdaComponent implements OnInit {
       ycolumn: yAxisCategories,
     } = data;
 
-    const value = (correlation_values as any[]).map((el: any) => [
-      (xAxisCategories as string[]).findIndex((x) => x == el.x),
-      (yAxisCategories as string[]).findIndex((y) => y == el.y),
-      el.value,
-    ]).filter(((el: any) => el[2] > 0))
+    const value = (correlation_values as any[])
+      .map((el: any) => [
+        (xAxisCategories as string[]).findIndex((x) => x == el.x),
+        (yAxisCategories as string[]).findIndex((y) => y == el.y),
+        el.value,
+      ])
+      .filter((el: any) => el[2] > 0);
 
     return {
       tooltip: {},
@@ -2552,40 +2584,72 @@ export class EdaComponent implements OnInit {
   }
 
   onMoreDetails() {
-    this.showMoreDetailsLoader.update((value) => !value);
+    this.activeTab = 1;
 
-    combineLatest(
-      this.datasetService.checkTransposeNum(this.datasetId()!),
-      this.datasetService.checkTransposeCat(this.datasetId()!),
-      this.datasetService.checkMissingData(this.datasetId()!),
-      this.datasetService.checkCorrelationValue(this.datasetId()!),
-      this.datasetService.checkPairPlot(this.datasetId()!),
-      this.datasetService.checkOutLayerValue(this.datasetId()!),
-      this.datasetService.checkAllRatio(this.datasetId()!)
-    ).subscribe((res) => {
-      const [
-        { id: transposeNum_id, ...transposeNum },
-        { id: transposeCat_id, ...transposeCat },
-        { id: missingData_id, ...missingData },
-        { id: correlation_id, ...correlation },
-        { id: pairPlot_id, ...pairPlot },
-        { id: outLayerValue_id, ...outLayerValue },
-        { id: allRatio_id, ...allRatio },
-      ] = res;
+    // Loaders
+    this.showMissingDataLoader = true;
+    this.showCorrelationLoader = true;
+    this.showTransposeNumLoader = true;
+    this.showTransposeCatLoader = true;
+    this.showPairPlotLoader = true;
+    this.showOutLayerLoader = true;
+    this.showAllRatioLoader = true;
 
-      setTimeout(() => {
-        this.showMoreDetailsLoader.update((value) => !value);
-        this.activeTab = 1;
+    this.datasetService.checkMissingData(this.datasetId()!).subscribe((res) => {
+      const { id: missingData_id, ...missingData } = res;
 
-        this.MissingData.set(this.createMissingDataChart(missingData));
+      this.MissingData.set(this.createMissingDataChart(missingData));
+      this.showMissingDataLoader = false;
+    });
+
+    this.datasetService
+      .checkCorrelationValue(this.datasetId()!)
+      .subscribe((res) => {
+        const { id: correlation_id, ...correlation } = res;
+
         this.correlationData.set(this.createCorrelationChart(correlation));
-        this.PairPlotData.set(this.createPairPlotChart(pairPlot));
-        this.outLayerData.set(this.createOutLayerValueChart(outLayerValue));
-        this.allRatio.set(allRatio);
-      }, 2000);
+        this.showCorrelationLoader = false;
+      });
 
-      this.transposeNum.set(transposeNum);
-      this.transposeCat.set(transposeCat);
+    this.datasetService
+      .checkTransposeNum(this.datasetId()!)
+      .subscribe((res) => {
+        const { id: transposeNum_id, ...transposeNum } = res;
+
+        this.transposeNum.set(transposeNum);
+        this.showTransposeNumLoader = false;
+      });
+
+    this.datasetService
+      .checkTransposeCat(this.datasetId()!)
+      .subscribe((res) => {
+        const { id: transposeCat_id, ...transposeCat } = res;
+
+        this.transposeCat.set(transposeCat);
+        this.showTransposeCatLoader = false;
+      });
+
+    this.datasetService.checkPairPlot(this.datasetId()!).subscribe((res) => {
+      const { id: pairPlot_id, ...pairPlot } = res;
+
+      this.PairPlotData.set(this.createPairPlotChart(pairPlot));
+      this.showPairPlotLoader = false;
+    });
+
+    this.datasetService
+      .checkOutLayerValue(this.datasetId()!)
+      .subscribe((res) => {
+        const { id: outLayerValue_id, ...outLayerValue } = res;
+
+        this.outLayerData.set(this.createOutLayerValueChart(outLayerValue));
+        this.showOutLayerLoader = false;
+      });
+
+    this.datasetService.checkAllRatio(this.datasetId()!).subscribe((res) => {
+      const { id: allRatio_id, ...allRatio } = res;
+
+      this.allRatio.set(allRatio);
+      this.showAllRatioLoader = false;
     });
   }
 }
