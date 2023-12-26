@@ -244,6 +244,36 @@ const TaigaImports = [
                     ></tui-data-list-wrapper>
                   </tui-select>
                 </div>
+                <div class="col-6 d-flex align-items-center justify-content-end">
+                  <span class="tui-text_h6 mx-2">Plot Value | </span>  
+                  <button
+                    tuiButton
+                    appearance="secondary"
+                    size="s"
+                    class="m-1"
+                    (click)="onPlotCKD()"
+                  >
+                    CKD
+                  </button>
+                   <button
+                    tuiButton
+                    appearance="secondary"
+                    size="s"
+                    class="m-1"
+                    (click)="onPlotNotCKD()"
+                  >
+                    Not CKD
+                  </button>
+                  <button
+                    tuiButton
+                    appearance="accent"
+                    size="s"
+                    class="m-1"
+                    (click)="onPlotReset()"
+                  >
+                    Reset
+                  </button>
+                </div>
               </div>
               <form [formGroup]="formController">
                 <div class="row my-4">
@@ -522,6 +552,7 @@ const TaigaImports = [
                     size="m"
                     class="m-1"
                     (click)="onCalculate()"
+                    [showLoader]="showCalculateLoader"
                     [disabled]="stepValidation()"
                   >
                     Calculate
@@ -554,6 +585,8 @@ export class AnalyticsComponent implements OnInit {
   // List
   datasetList: DatasetsModel[] = [];
   datasetNames: string[] = [];
+
+  showCalculateLoader = false;
 
   // Tab Index
   activeTab = 0;
@@ -588,7 +621,7 @@ export class AnalyticsComponent implements OnInit {
     ane: new FormControl(),
   });
 
-  fetchValue = [
+  fetchCkdValue = [
     {
       age: 64,
       bp: 60,
@@ -615,6 +648,8 @@ export class AnalyticsComponent implements OnInit {
       pe: 'no',
       ane: 'no',
     },
+  ];
+  fetchNotCkdValue = [
     {
       age: 48,
       bp: 80,
@@ -671,16 +706,33 @@ export class AnalyticsComponent implements OnInit {
         result = this.algorithmController.value ? false : true;
         this.formController.reset();
         this.datasetController.reset();
-        this.formController.setValue(
-          Math.random() < 0.5 ? this.fetchValue[0] : this.fetchValue[1]
-        );
         break;
     }
 
     return result;
   }
 
+  onPlotCKD() {
+    const randomIndex = Math.floor(Math.random() * this.fetchCkdValue.length);
+    const object = this.fetchCkdValue[randomIndex];
+
+    this.formController.setValue(object);
+  }
+
+  onPlotNotCKD() {
+    const randomIndex = Math.floor(Math.random() * this.fetchNotCkdValue.length);
+    const object = this.fetchNotCkdValue[randomIndex];
+
+    this.formController.setValue(object);
+  }
+
+  onPlotReset() {
+    this.formController.reset()
+  }
+
   onCalculate() {
+    this.showCalculateLoader = true;
+    
     const algorithm: string = this.algorithmController.value;
     const dataset = this.datasetList.find(
       (el: DatasetsModel) => el.Name === this.datasetController.value
@@ -722,6 +774,7 @@ export class AnalyticsComponent implements OnInit {
           plotted,
           result,
         };
+        this.showCalculateLoader = false;
         this.dialogs
           .open<number>(
             new PolymorpheusComponent(AnalyticResultComponent, this.injector),
