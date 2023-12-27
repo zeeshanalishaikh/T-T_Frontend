@@ -707,6 +707,9 @@ export class AnalyticsComponent implements OnInit {
         this.formController.reset();
         this.datasetController.reset();
         break;
+      case 1:
+        result = this.datasetController.value ? false : true;
+        break;
     }
 
     return result;
