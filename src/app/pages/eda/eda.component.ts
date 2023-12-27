@@ -1662,6 +1662,65 @@ const TaigaImports = [
           </div>
           }
         </tui-loader>
+        <div class="row justify-content-center pt-4 pb-2">
+          <div class="col-12">
+            <p
+              class="tui-text_body-xl text-center"
+              style="color: var(--tui-success-fill); font-weight: 600;"
+            >
+              Matrix
+            </p>
+          </div>
+        </div>
+        <tui-loader [showLoader]="showMatrixLoader" [overlay]="true">
+          @if(ROCCurveValueData().length && ROCCurveValueData().length){
+          <div class="row justify-content-center py-2">
+            <div class="col-3">
+              <table class="tui-table">
+                <tbody>
+                  <tr class="tui-table__tr tui-table__tr_border">
+                    <td class="tui-table__th tui-text_body-s">
+                      Confusion Matrix
+                    </td>
+                    <td class="tui-table__th tui-text_body-s"></td>
+                  </tr>
+                  @for(item of confusionMatrixData(); track item?.prop) {
+                  <tr class="tui-table__tr tui-table__tr_border">
+                    <td class="tui-table__td tui-text_body-s">
+                      {{ item?.prop }}
+                    </td>
+                    <td class="tui-table__td tui-text_body-s">
+                      {{ item?.value }}
+                    </td>
+                  </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+            <div class="col-1"></div>
+            <div class="col-3">
+              <table class="tui-table">
+                <tbody>
+                  <tr class="tui-table__tr tui-table__tr_border">
+                    <td class="tui-table__th tui-text_body-s">ROC Curve</td>
+                    <td class="tui-table__th tui-text_body-s"></td>
+                  </tr>
+                  @for(item of ROCCurveValueData(); track item?.prop) {
+                  <tr class="tui-table__tr tui-table__tr_border">
+                    <td class="tui-table__td tui-text_body-s">
+                      {{ item?.prop }}
+                    </td>
+                    <td class="tui-table__td tui-text_body-s">
+                      {{ item?.value }}
+                    </td>
+                  </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+          </div>
+          }
+        </tui-loader>
         } @else if(activeTab == 2){
         <div class="row justify-content-center py-2">
           <div class="col-12">
@@ -1748,12 +1807,304 @@ const TaigaImports = [
               </tui-scrollbar>
             </div>
             <div class="col-8">
-              @if(edaColumnData){
-                <div echarts [options]="edaColumnData"></div>
+              @if(showEdaChart()){
+              <div echarts [options]="edaColumnData()"></div>
               }
             </div>
           </div>
         </tui-loader>
+        <div class="row justify-content-center py-2">
+          <div class="col-12">
+            <p
+              class="tui-text_body-xl text-center"
+              style="color: var(--tui-success-fill); font-weight: 600;"
+            >
+              Error
+            </p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-4">
+            <form>
+              <tui-select [formControl]="errorColumnOneController">
+                Column
+                <input tuiTextfield placeholder="Choose a column" />
+                <tui-data-list-wrapper
+                  *tuiDataList
+                  [items]="[
+                    'age',
+                    'bp',
+                    'sg',
+                    'al',
+                    'su',
+                    'rbc',
+                    'pc',
+                    'pcc',
+                    'ba',
+                    'bgr',
+                    'bu',
+                    'sc',
+                    'sob',
+                    'pot',
+                    'hemo',
+                    'pcv',
+                    'wc',
+                    'rc',
+                    'htn',
+                    'dm',
+                    'cad',
+                    'appet',
+                    'pe',
+                    'ane',
+                    'classification'
+                  ]"
+                ></tui-data-list-wrapper>
+              </tui-select>
+            </form>
+          </div>
+          <div class="col-4">
+            <form>
+              <tui-select [formControl]="errorColumnTwoController">
+                Column
+                <input tuiTextfield placeholder="Choose a column" />
+                <tui-data-list-wrapper
+                  *tuiDataList
+                  [items]="[
+                    'age',
+                    'bp',
+                    'sg',
+                    'al',
+                    'su',
+                    'rbc',
+                    'pc',
+                    'pcc',
+                    'ba',
+                    'bgr',
+                    'bu',
+                    'sc',
+                    'sob',
+                    'pot',
+                    'hemo',
+                    'pcv',
+                    'wc',
+                    'rc',
+                    'htn',
+                    'dm',
+                    'cad',
+                    'appet',
+                    'pe',
+                    'ane',
+                    'classification'
+                  ]"
+                ></tui-data-list-wrapper>
+              </tui-select>
+            </form>
+          </div>
+          <div class="col-1">
+            <button
+              tuiButton
+              appearance="secondary"
+              size="m"
+              class="m-1"
+              [disabled]="
+                !(
+                  errorColumnOneController.value &&
+                  errorColumnTwoController.value
+                )
+              "
+              (click)="onErrorChange()"
+            >
+              Select
+            </button>
+          </div>
+        </div>
+        <tui-loader [showLoader]="showErrorLoader" [overlay]="true">
+          <div class="row justify-content-center py-4">
+            <div class="col-4">
+              <tui-scrollbar>
+                <div style="max-height: 400px;">
+                  <table class="tui-table">
+                    <tbody>
+                      @for(item of errorStates; track item.prop){
+                      <tr class="tui-table__tr tui-table__tr_border">
+                        <td class="tui-table__th tui-text_body-s">
+                          {{ item?.prop }}
+                        </td>
+                        <td class="tui-table__td tui-text_body-s">
+                          {{ item?.value }}
+                        </td>
+                      </tr>
+                      }
+                    </tbody>
+                  </table>
+                </div>
+              </tui-scrollbar>
+            </div>
+            <div class="col-8">
+              @if(showErrorChart()){
+              <div echarts [options]="errorData()"></div>
+              }
+            </div>
+          </div>
+        </tui-loader>
+        <div class="row justify-content-center py-2">
+          <div class="col-12">
+            <p
+              class="tui-text_body-xl text-center"
+              style="color: var(--tui-success-fill); font-weight: 600;"
+            >
+              Find Ratio
+            </p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-4">
+            <form>
+              <tui-select [formControl]="ratioColumnOneController">
+                Column
+                <input tuiTextfield placeholder="Choose a column" />
+                <tui-data-list-wrapper
+                  *tuiDataList
+                  [items]="[
+                    'age',
+                    'bp',
+                    'sg',
+                    'al',
+                    'su',
+                    'rbc',
+                    'pc',
+                    'pcc',
+                    'ba',
+                    'bgr',
+                    'bu',
+                    'sc',
+                    'sob',
+                    'pot',
+                    'hemo',
+                    'pcv',
+                    'wc',
+                    'rc',
+                    'htn',
+                    'dm',
+                    'cad',
+                    'appet',
+                    'pe',
+                    'ane',
+                    'classification'
+                  ]"
+                ></tui-data-list-wrapper>
+              </tui-select>
+            </form>
+          </div>
+          <div class="col-4">
+            <form>
+              <tui-select [formControl]="ratioColumnTwoController">
+                Column
+                <input tuiTextfield placeholder="Choose a column" />
+                <tui-data-list-wrapper
+                  *tuiDataList
+                  [items]="[
+                    'age',
+                    'bp',
+                    'sg',
+                    'al',
+                    'su',
+                    'rbc',
+                    'pc',
+                    'pcc',
+                    'ba',
+                    'bgr',
+                    'bu',
+                    'sc',
+                    'sob',
+                    'pot',
+                    'hemo',
+                    'pcv',
+                    'wc',
+                    'rc',
+                    'htn',
+                    'dm',
+                    'cad',
+                    'appet',
+                    'pe',
+                    'ane',
+                    'classification'
+                  ]"
+                ></tui-data-list-wrapper>
+              </tui-select>
+            </form>
+          </div>
+          <div class="col-1">
+            <button
+              tuiButton
+              appearance="secondary"
+              size="m"
+              class="m-1"
+              [disabled]="
+                !(
+                  ratioColumnOneController.value &&
+                  ratioColumnTwoController.value
+                )
+              "
+              (click)="onRatioColumnChange()"
+            >
+              Select
+            </button>
+          </div>
+        </div>
+        <div class="row justify-content-center py-2">
+          <div class="col-6">
+            <tui-loader [showLoader]="showRatioLoader" [overlay]="true">
+              @if(ratioColumnOneProp() && ratioColumnTwoProp() &&
+              ratioColumnThreeProp()) {
+              <div class="d-flex">
+                <table class="tui-table">
+                  <tbody>
+                    <tr class="tui-table__tr tui-table__tr_border">
+                      <td class="tui-table__th tui-text_body-s">
+                        {{ ratioColumnOneProp() }}
+                      </td>
+                    </tr>
+                    @for(value of ratioColumnOneData(); track value) {
+                    <tr class="tui-table__tr tui-table__tr_border">
+                      <td class="tui-table__td tui-text_body-s">{{ value }}</td>
+                    </tr>
+                    }
+                  </tbody>
+                </table>
+                <table class="tui-table">
+                  <tbody>
+                    <tr class="tui-table__tr tui-table__tr_border">
+                      <td class="tui-table__th tui-text_body-s">
+                        {{ ratioColumnTwoProp() }}
+                      </td>
+                    </tr>
+                    @for(value of ratioColumnTwoData(); track value) {
+                    <tr class="tui-table__tr tui-table__tr_border">
+                      <td class="tui-table__td tui-text_body-s">{{ value }}</td>
+                    </tr>
+                    }
+                  </tbody>
+                </table>
+                <table class="tui-table">
+                  <tbody>
+                    <tr class="tui-table__tr tui-table__tr_border">
+                      <td class="tui-table__th tui-text_body-s">
+                        {{ ratioColumnThreeProp() }}
+                      </td>
+                    </tr>
+                    @for(value of ratioColumnThreeData(); track value) {
+                    <tr class="tui-table__tr tui-table__tr_border">
+                      <td class="tui-table__td tui-text_body-s">{{ value }}</td>
+                    </tr>
+                    }
+                  </tbody>
+                </table>
+              </div>
+              }
+            </tui-loader>
+          </div>
+        </div>
         }
       </div>
     </div>
@@ -1779,11 +2130,9 @@ export class EdaComponent implements OnInit {
   activeTab = 0;
 
   // Boolean Values
-  showDTStatesLoader = signal<boolean>(false);
-  showDatasetStates = signal<boolean>(false);
-  showMoreDetailsLoader = signal<boolean>(false);
-  enableMoreDetails = signal<boolean>(false);
 
+  showDTStatesLoader = signal<boolean>(false);
+  showMoreDetailsLoader = signal<boolean>(false);
   showMissingDataLoader = false;
   showCorrelationLoader = false;
   showTransposeNumLoader = false;
@@ -1791,12 +2140,23 @@ export class EdaComponent implements OnInit {
   showPairPlotLoader = false;
   showOutLayerLoader = false;
   showAllRatioLoader = false;
-
+  showRatioLoader = false;
+  showMatrixLoader = false;
   showEdaColumnLoader = false;
+  showErrorLoader = false;
+
+  showDatasetStates = signal<boolean>(false);
+  enableMoreDetails = signal<boolean>(false);
+  showEdaChart = signal<boolean>(false);
+  showErrorChart = signal<boolean>(false);
 
   // Controller
   datasetController = new FormControl();
   edaColumnController = new FormControl();
+  ratioColumnOneController = new FormControl();
+  ratioColumnTwoController = new FormControl();
+  errorColumnOneController = new FormControl();
+  errorColumnTwoController = new FormControl();
 
   // Dataset
   dataset = signal<Partial<DatasetsModel>>({});
@@ -1809,6 +2169,7 @@ export class EdaComponent implements OnInit {
 
   edaColumnWise: any;
   edaColumnStates: any[] = [];
+  errorStates: any[] = [];
 
   // Dataset Dropdown
   datasetList = signal<DatasetsModel[]>([]);
@@ -1819,7 +2180,19 @@ export class EdaComponent implements OnInit {
   PairPlotData = signal<EChartsOption>({});
   outLayerData = signal<EChartsOption>({});
   correlationData = signal<EChartsOption>({});
-  edaColumnData: EChartsOption | undefined = undefined;
+  edaColumnData = signal<EChartsOption>({});
+  errorData = signal<EChartsOption>({});
+
+  ratioColumnOneProp = signal<string>('');
+  ratioColumnTwoProp = signal<string>('');
+  ratioColumnThreeProp = signal<string>('');
+
+  ratioColumnOneData = signal<string[]>([]);
+  ratioColumnTwoData = signal<string[]>([]);
+  ratioColumnThreeData = signal<string[]>([]);
+
+  confusionMatrixData = signal<any[]>([]);
+  ROCCurveValueData = signal<any[]>([]);
 
   constructor(
     @Inject(DatasetService)
@@ -2680,6 +3053,66 @@ export class EdaComponent implements OnInit {
           },
         },
       ],
+      aria: {
+        enabled: true,
+        decal: {
+          show: true,
+        },
+      },
+    };
+  }
+
+  createErrorDataChart(data: any): any {
+    const props = Object.keys(data);
+
+    const xAxis: any[] = data[props[0]];
+    const yAxis: any[] = data[props[1]];
+
+    const value: any = [];
+    for (var i = 0; i < xAxis.length; i++) {
+      value.push([yAxis[i], xAxis[i]]);
+    }
+
+    return {
+      legend: {},
+      tooltip: {},
+      xAxis: [{}],
+      yAxis: [{}],
+      series: [
+        {
+          symbolSize: 5,
+          data: value,
+          type: 'scatter',
+        },
+      ],
+      aria: {
+        enabled: true,
+        decal: {
+          show: true,
+        },
+      },
+      dataZoom: [
+        {
+          type: 'slider',
+          xAxisIndex: 0,
+          filterMode: 'none'
+        },
+        {
+          type: 'slider',
+          yAxisIndex: 0,
+          filterMode: 'none'
+        },
+        {
+          type: 'inside',
+          xAxisIndex: 0,
+          filterMode: 'none'
+        },
+        {
+          type: 'inside',
+          yAxisIndex: 0,
+          filterMode: 'none'
+        }
+      ],
     };
   }
 
@@ -2694,6 +3127,7 @@ export class EdaComponent implements OnInit {
     this.showPairPlotLoader = true;
     this.showOutLayerLoader = true;
     this.showAllRatioLoader = true;
+    this.showMatrixLoader = true;
 
     this.datasetService.checkMissingData(this.datasetId()!).subscribe((res) => {
       const { id: missingData_id, ...missingData } = res;
@@ -2751,6 +3185,34 @@ export class EdaComponent implements OnInit {
       this.allRatio.set(allRatio);
       this.showAllRatioLoader = false;
     });
+
+    this.datasetService.checkMatrix(this.datasetId()!).subscribe((res) => {
+      const confusionMatrix = res['Confusion Matrix'];
+      const ROCCurve = res['ROC Curve'];
+
+      const confusionMatrixValue = [];
+      const ROCCurveValue = [];
+
+      for (const prop in confusionMatrix) {
+        if (Object.prototype.hasOwnProperty.call(confusionMatrix, prop)) {
+          const value = confusionMatrix[prop];
+
+          confusionMatrixValue.push({ prop, value });
+        }
+      }
+
+      for (const prop in ROCCurve) {
+        if (Object.prototype.hasOwnProperty.call(ROCCurve, prop)) {
+          const value = ROCCurve[prop];
+
+          ROCCurveValue.push({ prop, value });
+        }
+      }
+
+      this.confusionMatrixData.set(confusionMatrixValue);
+      this.ROCCurveValueData.set(ROCCurveValue);
+      this.showMatrixLoader = false;
+    });
   }
 
   onEdaColumnChange() {
@@ -2783,7 +3245,7 @@ export class EdaComponent implements OnInit {
         this.edaColumnStates = data;
 
         if (type === 'num') {
-          this.edaColumnData = {
+          this.edaColumnData.set({
             xAxis: {
               type: 'category',
               data: res?.histogram.map((el: any) => el.value),
@@ -2797,9 +3259,11 @@ export class EdaComponent implements OnInit {
                 type: 'bar',
               },
             ],
-          };
+          });
+
+          this.showEdaChart.set(true);
         } else if (type === 'cat') {
-          this.edaColumnData = {
+          this.edaColumnData.set({
             xAxis: {
               type: 'value',
             },
@@ -2813,9 +3277,71 @@ export class EdaComponent implements OnInit {
                 type: 'bar',
               },
             ],
-          };
+          });
+
+          this.showEdaChart.set(true);
         }
       }, 3000);
     });
+  }
+
+  onRatioColumnChange() {
+    this.showRatioLoader = true;
+
+    const id = this.datasetId() || 0;
+    const columnOne = this.ratioColumnOneController.value;
+    const columnTwo = this.ratioColumnTwoController.value;
+
+    this.datasetService
+      .checkRatio(id, columnOne, columnTwo)
+      .subscribe((res) => {
+        const { id, selected_columns } = res;
+
+        const keys = Object.keys(selected_columns);
+
+        this.ratioColumnOneProp.set(keys[0]);
+        this.ratioColumnTwoProp.set(keys[1]);
+        this.ratioColumnThreeProp.set(keys[2]);
+
+        this.ratioColumnOneData.set(
+          Object.values(selected_columns[keys[0]]) as string[]
+        );
+        this.ratioColumnTwoData.set(
+          Object.values(selected_columns[keys[1]]) as string[]
+        );
+        this.ratioColumnThreeData.set(
+          Object.values(selected_columns[keys[2]]) as string[]
+        );
+
+        this.showRatioLoader = false;
+      });
+  }
+
+  onErrorChange() {
+    this.showErrorLoader = true;
+
+    const id = this.datasetId() || 0;
+    const columnOne = this.errorColumnOneController.value;
+    const columnTwo = this.errorColumnTwoController.value;
+
+    this.datasetService
+      .checkError(id, columnOne, columnTwo)
+      .subscribe((res) => {
+        const { id, 'Heatmap Data': data, ...detail } = res;
+
+        const item = [];
+
+        for (const prop in detail) {
+          if (Object.prototype.hasOwnProperty.call(detail, prop)) {
+            const value = detail[prop];
+            item.push({ prop, value });
+          }
+        }
+        this.errorStates = item;
+        this.errorData.set(this.createErrorDataChart(data));
+
+        this.showErrorChart.set(true);
+        this.showErrorLoader = false;
+      });
   }
 }

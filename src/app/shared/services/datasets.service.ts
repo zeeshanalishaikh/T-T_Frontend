@@ -99,6 +99,34 @@ export class DatasetService {
     return this.http.get<any>(URL);
   }
 
+  public checkRatio(dataset_id: number, columnOne: string, columnTwo: string): Observable<any> {
+    const URL = this.urlGenerator.fetch('dataset', 'checkRatio', [
+      { placeholder: '{dataset_id}', value: dataset_id },
+      { placeholder: '{columnOne}', value: columnOne },
+      { placeholder: '{columnTwo}', value: columnTwo },
+    ]);
+
+    return this.http.get<any>(URL);
+  }
+
+  public checkMatrix(dataset_id: number): Observable<any> {
+    const URL = this.urlGenerator.fetch('dataset', 'checkMatrix', [
+      { placeholder: '{dataset_id}', value: dataset_id }
+    ]);
+
+    return this.http.get<any>(URL);
+  }
+
+  public checkError(dataset_id: number, columnOne: string, columnTwo: string): Observable<any> {
+    const URL = this.urlGenerator.fetch('dataset', 'checkError', [
+      { placeholder: '{dataset_id}', value: dataset_id },
+      { placeholder: '{columnOne}', value: columnOne },
+      { placeholder: '{columnTwo}', value: columnTwo },
+    ]);
+
+    return this.http.get<any>(URL);
+  }
+
   public create(fileName: string): Observable<any> {
     const URL = this.urlGenerator.fetch('dataset', 'create');
 
